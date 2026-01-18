@@ -33,11 +33,6 @@ Located in `src/routes/admin.js`:
 - Unsanitized shell command execution
 - User input directly in exec() calls
 
-### Hardcoded Credentials (CWE-798)
-Located in `src/routes/admin.js`:
-- Hardcoded admin password
-- Hardcoded API key
-
 ### Insecure Randomness (CWE-330)
 Located in `src/utils/helpers.js`:
 - Using Math.random() for session token generation
@@ -54,7 +49,7 @@ vulnerable-demo-app/
 │   ├── routes/
 │   │   ├── users.js          # SQL injection vulnerabilities
 │   │   ├── files.js          # Path traversal vulnerabilities
-│   │   └── admin.js          # Command injection, hardcoded credentials
+│   │   └── admin.js          # Command injection vulnerabilities
 │   └── utils/
 │       └── helpers.js        # XSS, insecure randomness
 └── .github/
