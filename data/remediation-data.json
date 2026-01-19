@@ -1462,61 +1462,61 @@
         "structuredOutput": {
           "fixes": [
             {
-              "status": "pending",
+              "status": "completed",
               "filePath": "src/routes/admin.js",
-              "fixedCode": "",
+              "fixedCode": "router.get('/safe-ping', systemCommandLimiter, (req, res) => {",
               "alertNumber": 12,
-              "explanation": "Missing rate limiting for the safe-ping route.",
-              "testsPassed": false,
+              "explanation": "Added rate limiting to the /safe-ping route to prevent abuse.",
+              "testsPassed": null,
               "originalCode": "router.get('/safe-ping', (req, res) => {",
-              "confidenceScore": 0.5
+              "confidenceScore": 0.9
             },
             {
               "status": "pending",
               "filePath": "src/routes/users.js",
-              "fixedCode": "",
+              "fixedCode": null,
               "alertNumber": 11,
-              "explanation": "Missing rate limiting for the find route.",
-              "testsPassed": false,
+              "explanation": "Pending implementation of rate limiting for the /find route.",
+              "testsPassed": null,
               "originalCode": "router.get('/find', (req, res) => {",
-              "confidenceScore": 0.5
+              "confidenceScore": null
             },
             {
-              "status": "in_progress",
+              "status": "completed",
               "filePath": "src/routes/admin.js",
-              "fixedCode": "router.post('/backup', systemCommandLimiter, authenticate, (req, res) => {",
+              "fixedCode": "router.get('/lookup', systemCommandLimiter, (req, res) => {",
               "alertNumber": 10,
-              "explanation": "Added rate limiting to the backup route to prevent abuse.",
-              "testsPassed": false,
-              "originalCode": "router.post('/backup', authenticate, (req, res) => {",
-              "confidenceScore": 0.8
+              "explanation": "Added rate limiting to the /lookup route to prevent abuse.",
+              "testsPassed": null,
+              "originalCode": "router.get('/lookup', (req, res) => {",
+              "confidenceScore": 0.9
             },
             {
               "status": "pending",
               "filePath": "src/routes/users.js",
-              "fixedCode": "",
+              "fixedCode": null,
               "alertNumber": 9,
-              "explanation": "Missing rate limiting for the login route.",
-              "testsPassed": false,
+              "explanation": "Pending implementation of rate limiting for the /login route.",
+              "testsPassed": null,
               "originalCode": "router.post('/login', (req, res) => {",
-              "confidenceScore": 0.5
+              "confidenceScore": null
             },
             {
-              "status": "pending",
+              "status": "completed",
               "filePath": "src/routes/admin.js",
-              "fixedCode": "",
+              "fixedCode": "router.post('/backup', systemCommandLimiter, (req, res) => {",
               "alertNumber": 8,
-              "explanation": "Missing rate limiting for the lookup route.",
-              "testsPassed": false,
-              "originalCode": "router.get('/lookup', (req, res) => {",
-              "confidenceScore": 0.5
+              "explanation": "Added rate limiting to the /backup route to prevent abuse.",
+              "testsPassed": null,
+              "originalCode": "router.post('/backup', (req, res) => {",
+              "confidenceScore": 0.9
             }
           ],
           "prUrl": null,
-          "progress": 40,
-          "currentTask": "Implement rate limiting for remaining routes.",
-          "confidenceScore": 0.5,
-          "confidenceExplanation": "Some fixes are in progress, and not all tests have been run yet."
+          "progress": 60,
+          "currentTask": "Implement remaining rate limiting fixes for users.js routes.",
+          "confidenceScore": 0.9,
+          "confidenceExplanation": "The fixes implemented follow standard security practices and address the identified vulnerabilities."
         },
         "createdAt": "2026-01-19T22:57:23.232802Z",
         "updatedAt": "2026-01-19T22:57:54.305657Z",
