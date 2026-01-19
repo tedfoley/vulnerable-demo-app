@@ -1304,7 +1304,7 @@
       {
         "sessionId": "devin-10883df95f6344b793173ae8f58c5939",
         "url": "https://app.devin.ai/sessions/devin-10883df95f6344b793173ae8f58c5939",
-        "status": "blocked",
+        "status": "pending",
         "batchId": "",
         "structuredOutput": {
           "fixes": [
@@ -1356,7 +1356,7 @@
           "confidenceExplanation": "All vulnerabilities have been addressed with appropriate fixes and validations."
         },
         "createdAt": "2026-01-19T22:57:22.360851Z",
-        "updatedAt": "2026-01-19T23:10:04.281448Z",
+        "updatedAt": "2026-01-19T23:40:19.949145Z",
         "messages": [
           {
             "type": "initial_user_message",
