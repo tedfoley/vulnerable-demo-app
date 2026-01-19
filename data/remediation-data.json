@@ -1390,7 +1390,7 @@
       {
         "sessionId": "devin-5da5ec4ef6b447d2958d2f7eff666bcd",
         "url": "https://app.devin.ai/sessions/devin-5da5ec4ef6b447d2958d2f7eff666bcd",
-        "status": "blocked",
+        "status": "pending",
         "batchId": "",
         "structuredOutput": {
           "fixes": [
@@ -1432,7 +1432,7 @@
           "confidenceExplanation": "The fix is straightforward and follows established security patterns, ensuring that the filename parameter is validated correctly."
         },
         "createdAt": "2026-01-19T22:57:22.875579Z",
-        "updatedAt": "2026-01-19T23:01:02.895611Z",
+        "updatedAt": "2026-01-19T23:31:17.192533Z",
         "messages": [
           {
             "type": "initial_user_message",
