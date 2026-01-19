@@ -1312,8 +1312,8 @@
               "status": "completed",
               "filePath": "src/routes/admin.js",
               "fixedCode": "execFile('ping', ['-c', '4', host], (error, stdout, stderr) => {",
-              "alertNumber": 13,
-              "explanation": "Replaced exec() with execFile() to prevent shell injection and added input validation for host.",
+              "alertNumber": 16,
+              "explanation": "Replaced exec() with execFile() to prevent command injection and added input validation for host.",
               "testsPassed": true,
               "originalCode": "exec('ping -c 4 ' + host, (error, stdout, stderr) => {",
               "confidenceScore": 1
@@ -1322,8 +1322,8 @@
               "status": "completed",
               "filePath": "src/routes/admin.js",
               "fixedCode": "execFile('tar', ['-czf', outputPath, '/var/log'], (error, stdout, stderr) => {",
-              "alertNumber": 14,
-              "explanation": "Replaced exec() with execFile() to prevent shell injection and added input validation for filename.",
+              "alertNumber": 15,
+              "explanation": "Replaced exec() with execFile() to prevent command injection and added input validation for filename.",
               "testsPassed": true,
               "originalCode": "exec(`tar -czf /tmp/${filename}.tar.gz /var/log`, (error, stdout, stderr) => {",
               "confidenceScore": 1
@@ -1332,8 +1332,8 @@
               "status": "completed",
               "filePath": "src/routes/admin.js",
               "fixedCode": "execFile('nslookup', [domain], (error, stdout, stderr) => {",
-              "alertNumber": 15,
-              "explanation": "Replaced exec() with execFile() to prevent shell injection and added input validation for domain.",
+              "alertNumber": 14,
+              "explanation": "Replaced exec() with execFile() to prevent command injection and added input validation for domain.",
               "testsPassed": true,
               "originalCode": "const command = 'nslookup ' + domain;",
               "confidenceScore": 1
@@ -1342,18 +1342,18 @@
               "status": "completed",
               "filePath": "src/routes/admin.js",
               "fixedCode": "execFile('ping', ['-c', '4', host], (error, stdout, stderr) => {",
-              "alertNumber": 16,
-              "explanation": "Replaced exec() with execFile() to prevent shell injection and added input validation for host.",
+              "alertNumber": 13,
+              "explanation": "Replaced exec() with execFile() to prevent command injection and added input validation for host.",
               "testsPassed": true,
-              "originalCode": "exec(`ping -c 4 ${host}`, (error, stdout, stderr) => {",
+              "originalCode": "exec('ping -c 4 ' + host, (error, stdout, stderr) => {",
               "confidenceScore": 1
             }
           ],
           "prUrl": "https://github.com/tedfoley/vulnerable-demo-app/pull/3",
           "progress": 100,
-          "currentTask": "Waiting for CI checks to pass",
+          "currentTask": "Fix type confusion vulnerability - ensure parameters are strings not arrays",
           "confidenceScore": 1,
-          "confidenceExplanation": "All fixes were straightforward and followed best practices."
+          "confidenceExplanation": "All vulnerabilities have been addressed with appropriate fixes and validations."
         },
         "createdAt": "2026-01-19T22:57:22.360851Z",
         "updatedAt": "2026-01-19T23:01:16.551732Z",
