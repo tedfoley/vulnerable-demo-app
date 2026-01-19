@@ -1309,13 +1309,13 @@
         "structuredOutput": {
           "fixes": [
             {
-              "status": "in_progress",
+              "status": "completed",
               "filePath": "src/routes/admin.js",
-              "fixedCode": "execFile('ping', ['-c', '4', host], (error, stdout, stderr) => {",
+              "fixedCode": "// FIXED: Command Injection vulnerability #1\n// CWE-78: Using execFile with arguments array prevents shell injection\nrouter.get('/ping', (req, res) => {\n  const host = req.query.host;\n  \n  // Validate input format (IP address or hostname)\n  const ipRegex = /^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$/;\n  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;\n  \n  if (!host || (!ipRegex.test(host) && !hostnameRegex.test(host))) {\n    return res.status(400).json({ error: 'Invalid host format' });\n  }\n  \n  // SECURE: Using execFile with arguments array - no shell interpretation\n  execFile('ping', ['-c', '4', host], (error, stdout, stderr) => {\n    if (error) {\n      res.status(500).json({ error: stderr });\n    } else {\n      res.send(`<pre>${stdout}</pre>`);\n    }\n  });\n});",
               "alertNumber": 13,
-              "explanation": "Changed to execFile to prevent command injection by passing arguments as an array.",
+              "explanation": "This fix replaces the vulnerable exec call with execFile, which does not invoke a shell and thus prevents command injection. Additionally, input validation is added to ensure that the host parameter is either a valid IP address or hostname.",
               "testsPassed": false,
-              "originalCode": "exec('ping -c 4 ' + host, (error, stdout, stderr) => {",
+              "originalCode": "// TODO: Fix this security issue - Command Injection vulnerability #1\n// CWE-78: Improper Neutralization of Special Elements used in an OS Command\nrouter.get('/ping', (req, res) => {\n  const host = req.query.host;\n  \n  // VULNERABLE: Direct command execution with user input\n  exec('ping -c 4 ' + host, (error, stdout, stderr) => {\n    if (error) {\n      res.status(500).json({ error: stderr });\n    } else {\n      res.send(`<pre>${stdout}</pre>`);\n    }\n  });\n});",
               "confidenceScore": 0.9
             },
             {
@@ -1325,7 +1325,7 @@
               "alertNumber": 14,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "exec(`tar -czf /tmp/${filename}.tar.gz /var/log`, (error, stdout, stderr) => {",
+              "originalCode": "// TODO: Fix this security issue - Command Injection vulnerability #2\n// CWE-78: Improper Neutralization of Special Elements used in an OS Command\nrouter.post('/backup', authenticate, (req, res) => {\n  const filename = req.body.filename;\n  \n  // VULNERABLE: Template literal with user input in shell command\n  exec(`tar -czf /tmp/${filename}.tar.gz /var/log`, (error, stdout, stderr) => {\n    if (error) {\n      res.status(500).json({ error: stderr });\n    } else {\n      res.json({ success: true, message: `Backup created: ${filename}.tar.gz` });\n    }\n  });\n});",
               "confidenceScore": 0
             },
             {
@@ -1335,7 +1335,7 @@
               "alertNumber": 15,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "exec(command, (error, stdout, stderr) => {",
+              "originalCode": "// TODO: Fix this security issue - Command Injection vulnerability #3\n// CWE-78: Improper Neutralization of Special Elements used in an OS Command\nrouter.get('/lookup', (req, res) => {\n  const domain = req.query.domain;\n  \n  // VULNERABLE: User input directly in command string\n  const command = 'nslookup ' + domain;\n  \n  exec(command, (error, stdout, stderr) => {\n    if (error) {\n      res.status(500).json({ error: stderr });\n    } else {\n      res.json({ result: stdout });\n    }\n  });\n});",
               "confidenceScore": 0
             },
             {
@@ -1345,15 +1345,15 @@
               "alertNumber": 16,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "exec(`ping -c 4 ${host}`, (error, stdout, stderr) => {",
+              "originalCode": "// TODO: Fix this security issue - Command Injection vulnerability #4\n// CWE-78: Improper Neutralization of Special Elements used in an OS Command\nrouter.get('/safe-ping', (req, res) => {\n  const host = req.query.host;\n  \n  // SAFE: Validate input before using in command\n  const ipRegex = /^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$/;\n  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\\.[a-zA-Z]{2,})+$/;\n  \n  if (!ipRegex.test(host) && !hostnameRegex.test(host)) {\n    return res.status(400).json({ error: 'Invalid host format' });\n  }\n  \n  exec(`ping -c 4 ${host}`, (error, stdout, stderr) => {\n    if (error) {\n      res.status(500).json({ error: stderr });\n    } else {\n      res.send(`<pre>${stdout}</pre>`);\n    }\n  });\n});",
               "confidenceScore": 0
             }
           ],
           "prUrl": null,
           "progress": 25,
-          "currentTask": "Implement fixes for command-line injection vulnerabilities in src/routes/admin.js",
+          "currentTask": "Fix Alert #14 - command-line injection at line 38",
           "confidenceScore": 0.9,
-          "confidenceExplanation": "The fix for Alert #13 is in progress and follows a clear security pattern, while the others are pending implementation."
+          "confidenceExplanation": "The fix for Alert #13 is straightforward and follows established security patterns, leading to a high confidence score."
         },
         "createdAt": "2026-01-19T22:57:22.360851Z",
         "updatedAt": "2026-01-19T22:57:56.945012Z",
