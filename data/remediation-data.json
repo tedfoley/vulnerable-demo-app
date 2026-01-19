@@ -1309,14 +1309,14 @@
         "structuredOutput": {
           "fixes": [
             {
-              "status": "pending",
+              "status": "in_progress",
               "filePath": "src/routes/admin.js",
-              "fixedCode": "",
+              "fixedCode": "execFile('ping', ['-c', '4', host], (error, stdout, stderr) => {",
               "alertNumber": 13,
-              "explanation": "",
+              "explanation": "Changed to execFile to prevent command injection by passing arguments as an array.",
               "testsPassed": false,
-              "originalCode": "",
-              "confidenceScore": 0
+              "originalCode": "exec('ping -c 4 ' + host, (error, stdout, stderr) => {",
+              "confidenceScore": 0.9
             },
             {
               "status": "pending",
@@ -1325,7 +1325,7 @@
               "alertNumber": 14,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "exec(`tar -czf /tmp/${filename}.tar.gz /var/log`, (error, stdout, stderr) => {",
               "confidenceScore": 0
             },
             {
@@ -1335,7 +1335,7 @@
               "alertNumber": 15,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "exec(command, (error, stdout, stderr) => {",
               "confidenceScore": 0
             },
             {
@@ -1345,15 +1345,15 @@
               "alertNumber": 16,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "exec(`ping -c 4 ${host}`, (error, stdout, stderr) => {",
               "confidenceScore": 0
             }
           ],
           "prUrl": null,
-          "progress": 10,
-          "currentTask": "Analyze the 4 command-line injection vulnerabilities in src/routes/admin.js",
-          "confidenceScore": 0,
-          "confidenceExplanation": "Initial analysis and setup completed, but no fixes have been implemented yet."
+          "progress": 25,
+          "currentTask": "Implement fixes for command-line injection vulnerabilities in src/routes/admin.js",
+          "confidenceScore": 0.9,
+          "confidenceExplanation": "The fix for Alert #13 is in progress and follows a clear security pattern, while the others are pending implementation."
         },
         "createdAt": "2026-01-19T22:57:22.360851Z",
         "updatedAt": "2026-01-19T22:57:56.945012Z",
