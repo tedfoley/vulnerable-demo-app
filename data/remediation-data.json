@@ -1306,7 +1306,55 @@
         "url": "https://app.devin.ai/sessions/devin-10883df95f6344b793173ae8f58c5939",
         "status": "pending",
         "batchId": "",
-        "structuredOutput": null,
+        "structuredOutput": {
+          "fixes": [
+            {
+              "status": "pending",
+              "filePath": "src/routes/admin.js",
+              "fixedCode": "",
+              "alertNumber": 16,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            },
+            {
+              "status": "pending",
+              "filePath": "src/routes/admin.js",
+              "fixedCode": "",
+              "alertNumber": 15,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            },
+            {
+              "status": "pending",
+              "filePath": "src/routes/admin.js",
+              "fixedCode": "",
+              "alertNumber": 14,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            },
+            {
+              "status": "pending",
+              "filePath": "src/routes/admin.js",
+              "fixedCode": "",
+              "alertNumber": 13,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            }
+          ],
+          "prUrl": null,
+          "progress": 0,
+          "currentTask": "Analyze and fix command-line injection vulnerabilities in src/routes/admin.js",
+          "confidenceScore": 0,
+          "confidenceExplanation": "No fixes have been implemented yet."
+        },
         "createdAt": "2026-01-19T22:57:22.360851Z",
         "updatedAt": "2026-01-19T22:57:56.945012Z",
         "messages": [
