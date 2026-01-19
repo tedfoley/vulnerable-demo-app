@@ -1466,7 +1466,7 @@
       {
         "sessionId": "devin-14a3448cf62e472db192beef595e3b01",
         "url": "https://app.devin.ai/sessions/devin-14a3448cf62e472db192beef595e3b01",
-        "status": "blocked",
+        "status": "pending",
         "batchId": "",
         "structuredOutput": {
           "fixes": [
@@ -1528,7 +1528,7 @@
           "confidenceExplanation": "High confidence - standard rate limiting pattern using well-established express-rate-limit package. CodeQL CI check passed, confirming the fixes resolve the alerts."
         },
         "createdAt": "2026-01-19T22:57:23.232802Z",
-        "updatedAt": "2026-01-19T23:04:37.409116Z",
+        "updatedAt": "2026-01-19T23:34:54.306763Z",
         "messages": [
           {
             "type": "initial_user_message",
