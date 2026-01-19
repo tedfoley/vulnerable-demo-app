@@ -1313,7 +1313,7 @@
               "filePath": "src/routes/admin.js",
               "fixedCode": "execFile('ping', ['-c', '4', host], (error, stdout, stderr) => {",
               "alertNumber": 13,
-              "explanation": "Replaced exec with execFile and added input validation for host.",
+              "explanation": "Replaced exec with execFile to prevent command injection and added input validation for host.",
               "testsPassed": true,
               "originalCode": "exec('ping -c 4 ' + host, (error, stdout, stderr) => {",
               "confidenceScore": 1
@@ -1323,7 +1323,7 @@
               "filePath": "src/routes/admin.js",
               "fixedCode": "execFile('tar', ['-czf', outputPath, '/var/log'], (error, stdout, stderr) => {",
               "alertNumber": 14,
-              "explanation": "Replaced exec with execFile and added input validation for filename.",
+              "explanation": "Replaced exec with execFile to prevent command injection and added input validation for filename.",
               "testsPassed": true,
               "originalCode": "exec(`tar -czf /tmp/${filename}.tar.gz /var/log`, (error, stdout, stderr) => {",
               "confidenceScore": 1
@@ -1333,9 +1333,9 @@
               "filePath": "src/routes/admin.js",
               "fixedCode": "execFile('nslookup', [domain], (error, stdout, stderr) => {",
               "alertNumber": 15,
-              "explanation": "Replaced exec with execFile and added input validation for domain.",
+              "explanation": "Replaced exec with execFile to prevent command injection and added input validation for domain.",
               "testsPassed": true,
-              "originalCode": "const command = 'nslookup ' + domain;",
+              "originalCode": "const command = 'nslookup ' + domain;\nexec(command, (error, stdout, stderr) => {",
               "confidenceScore": 1
             },
             {
@@ -1343,7 +1343,7 @@
               "filePath": "src/routes/admin.js",
               "fixedCode": "execFile('ping', ['-c', '4', host], (error, stdout, stderr) => {",
               "alertNumber": 16,
-              "explanation": "Replaced exec with execFile and ensured input validation is in place.",
+              "explanation": "Replaced exec with execFile to prevent command injection and ensured input validation is in place.",
               "testsPassed": true,
               "originalCode": "exec(`ping -c 4 ${host}`, (error, stdout, stderr) => {",
               "confidenceScore": 1
@@ -1351,9 +1351,9 @@
           ],
           "prUrl": null,
           "progress": 100,
-          "currentTask": "Run lint checks to verify code quality",
+          "currentTask": "Create PR with detailed description of security fixes",
           "confidenceScore": 1,
-          "confidenceExplanation": "All fixes were implemented with proper validation and use of execFile, ensuring high confidence in the security of the code."
+          "confidenceExplanation": "All fixes were straightforward and followed established security patterns."
         },
         "createdAt": "2026-01-19T22:57:22.360851Z",
         "updatedAt": "2026-01-19T22:57:56.945012Z",
