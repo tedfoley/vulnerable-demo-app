@@ -1312,17 +1312,7 @@
               "status": "pending",
               "filePath": "src/routes/admin.js",
               "fixedCode": "",
-              "alertNumber": 16,
-              "explanation": "",
-              "testsPassed": false,
-              "originalCode": "",
-              "confidenceScore": 0
-            },
-            {
-              "status": "pending",
-              "filePath": "src/routes/admin.js",
-              "fixedCode": "",
-              "alertNumber": 15,
+              "alertNumber": 13,
               "explanation": "",
               "testsPassed": false,
               "originalCode": "",
@@ -1342,7 +1332,17 @@
               "status": "pending",
               "filePath": "src/routes/admin.js",
               "fixedCode": "",
-              "alertNumber": 13,
+              "alertNumber": 15,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            },
+            {
+              "status": "pending",
+              "filePath": "src/routes/admin.js",
+              "fixedCode": "",
+              "alertNumber": 16,
               "explanation": "",
               "testsPassed": false,
               "originalCode": "",
@@ -1350,10 +1350,10 @@
             }
           ],
           "prUrl": null,
-          "progress": 0,
-          "currentTask": "Analyze and fix command-line injection vulnerabilities in src/routes/admin.js",
+          "progress": 10,
+          "currentTask": "Analyze the 4 command-line injection vulnerabilities in src/routes/admin.js",
           "confidenceScore": 0,
-          "confidenceExplanation": "No fixes have been implemented yet."
+          "confidenceExplanation": "Initial analysis and setup completed, but no fixes have been implemented yet."
         },
         "createdAt": "2026-01-19T22:57:22.360851Z",
         "updatedAt": "2026-01-19T22:57:56.945012Z",
