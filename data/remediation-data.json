@@ -1386,14 +1386,14 @@
         "structuredOutput": {
           "fixes": [
             {
-              "status": "pending",
+              "status": "in_progress",
               "filePath": "src/routes/files.js",
               "fixedCode": "",
               "alertNumber": 26,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "",
-              "confidenceScore": 0
+              "originalCode": "if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\\\')) {",
+              "confidenceScore": 0.8
             },
             {
               "status": "pending",
@@ -1402,8 +1402,8 @@
               "alertNumber": 25,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "",
-              "confidenceScore": 0
+              "originalCode": "if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\\\')) {",
+              "confidenceScore": 0.8
             },
             {
               "status": "pending",
@@ -1412,15 +1412,15 @@
               "alertNumber": 24,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "",
-              "confidenceScore": 0
+              "originalCode": "if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\\\')) {",
+              "confidenceScore": 0.8
             }
           ],
           "prUrl": null,
-          "progress": 0,
-          "currentTask": "Analyze the vulnerability in src/routes/files.js line 60",
-          "confidenceScore": 0,
-          "confidenceExplanation": "No fixes have been implemented yet."
+          "progress": 30,
+          "currentTask": "Implement fix for type confusion vulnerability (alerts #24, #25, #26)",
+          "confidenceScore": 0.8,
+          "confidenceExplanation": "The fix is straightforward and follows a common security pattern, but there is some uncertainty about edge cases."
         },
         "createdAt": "2026-01-19T22:57:22.875579Z",
         "updatedAt": "2026-01-19T22:57:55.927457Z",
