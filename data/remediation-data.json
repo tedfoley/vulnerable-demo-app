@@ -1457,57 +1457,57 @@
               "filePath": "src/routes/admin.js",
               "fixedCode": "",
               "alertNumber": 12,
-              "explanation": "Missing rate limiting on the route handler performing a system command.",
+              "explanation": "Missing rate limiting for the safe-ping route.",
               "testsPassed": false,
-              "originalCode": "exec('ping -c 4 ' + host, (error, stdout, stderr) => {",
-              "confidenceScore": 0
+              "originalCode": "router.get('/safe-ping', (req, res) => {",
+              "confidenceScore": 0.5
             },
             {
               "status": "pending",
               "filePath": "src/routes/users.js",
               "fixedCode": "",
               "alertNumber": 11,
-              "explanation": "Missing rate limiting on the route handler performing database access.",
+              "explanation": "Missing rate limiting for the find route.",
               "testsPassed": false,
-              "originalCode": "const users = db.prepare(query).all();",
-              "confidenceScore": 0
+              "originalCode": "router.get('/find', (req, res) => {",
+              "confidenceScore": 0.5
             },
             {
-              "status": "pending",
+              "status": "in_progress",
               "filePath": "src/routes/admin.js",
-              "fixedCode": "",
+              "fixedCode": "router.post('/backup', systemCommandLimiter, authenticate, (req, res) => {",
               "alertNumber": 10,
-              "explanation": "Missing rate limiting on the route handler performing a system command.",
+              "explanation": "Added rate limiting to the backup route to prevent abuse.",
               "testsPassed": false,
-              "originalCode": "exec(`tar -czf /tmp/${filename}.tar.gz /var/log`, (error, stdout, stderr) => {",
-              "confidenceScore": 0
+              "originalCode": "router.post('/backup', authenticate, (req, res) => {",
+              "confidenceScore": 0.8
             },
             {
               "status": "pending",
               "filePath": "src/routes/users.js",
               "fixedCode": "",
               "alertNumber": 9,
-              "explanation": "Missing rate limiting on the route handler performing database access.",
+              "explanation": "Missing rate limiting for the login route.",
               "testsPassed": false,
-              "originalCode": "const users = db.prepare(query).all();",
-              "confidenceScore": 0
+              "originalCode": "router.post('/login', (req, res) => {",
+              "confidenceScore": 0.5
             },
             {
               "status": "pending",
               "filePath": "src/routes/admin.js",
               "fixedCode": "",
               "alertNumber": 8,
-              "explanation": "Missing rate limiting on the route handler performing a system command.",
+              "explanation": "Missing rate limiting for the lookup route.",
               "testsPassed": false,
-              "originalCode": "exec('ping -c 4 ' + host, (error, stdout, stderr) => {",
-              "confidenceScore": 0
+              "originalCode": "router.get('/lookup', (req, res) => {",
+              "confidenceScore": 0.5
             }
           ],
           "prUrl": null,
           "progress": 40,
-          "currentTask": "Implement rate limiting fixes for CodeQL alerts",
-          "confidenceScore": 0,
-          "confidenceExplanation": "The fixes are not yet implemented, and the confidence score reflects the uncertainty in the current state."
+          "currentTask": "Implement rate limiting for remaining routes.",
+          "confidenceScore": 0.5,
+          "confidenceExplanation": "Some fixes are in progress, and not all tests have been run yet."
         },
         "createdAt": "2026-01-19T22:57:23.232802Z",
         "updatedAt": "2026-01-19T22:57:54.305657Z",
