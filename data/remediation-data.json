@@ -1457,9 +1457,9 @@
               "filePath": "src/routes/admin.js",
               "fixedCode": "",
               "alertNumber": 12,
-              "explanation": "",
+              "explanation": "Missing rate limiting for the system command execution.",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "exec('ping -c 4 ' + host, (error, stdout, stderr) => {",
               "confidenceScore": 0
             },
             {
@@ -1467,9 +1467,9 @@
               "filePath": "src/routes/users.js",
               "fixedCode": "",
               "alertNumber": 11,
-              "explanation": "",
+              "explanation": "Missing rate limiting for database access.",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "const users = db.prepare(query).all();",
               "confidenceScore": 0
             },
             {
@@ -1477,9 +1477,9 @@
               "filePath": "src/routes/admin.js",
               "fixedCode": "",
               "alertNumber": 10,
-              "explanation": "",
+              "explanation": "Missing rate limiting for the system command execution.",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "exec(`tar -czf /tmp/${filename}.tar.gz /var/log`, (error, stdout, stderr) => {",
               "confidenceScore": 0
             },
             {
@@ -1487,9 +1487,9 @@
               "filePath": "src/routes/users.js",
               "fixedCode": "",
               "alertNumber": 9,
-              "explanation": "",
+              "explanation": "Missing rate limiting for database access.",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "const users = db.prepare(query).all();",
               "confidenceScore": 0
             },
             {
@@ -1497,15 +1497,15 @@
               "filePath": "src/routes/admin.js",
               "fixedCode": "",
               "alertNumber": 8,
-              "explanation": "",
+              "explanation": "Missing rate limiting for the system command execution.",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "exec('ping -c 4 ' + host, (error, stdout, stderr) => {",
               "confidenceScore": 0
             }
           ],
           "prUrl": null,
           "progress": 0,
-          "currentTask": "Analyze and fix CodeQL security vulnerabilities related to missing rate limiting.",
+          "currentTask": "Analyzing and fixing CodeQL alerts for missing rate limiting.",
           "confidenceScore": 0,
           "confidenceExplanation": "No fixes have been implemented yet."
         },
