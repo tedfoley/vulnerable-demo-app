@@ -38,11 +38,16 @@ const authenticate = (req, res, next) => {
 router.get('/ping', (req, res) => {
   const host = req.query.host;
   
+  // Prevent type confusion - ensure host is a string, not an array
+  if (typeof host !== 'string') {
+    return res.status(400).json({ error: 'Invalid host format' });
+  }
+  
   // Validate input format (IP address or hostname)
   // Using simple regex for IP to avoid ReDoS, and helper function for hostname
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
   
-  if (!host || (!ipRegex.test(host) && !isValidHostname(host))) {
+  if (!ipRegex.test(host) && !isValidHostname(host)) {
     return res.status(400).json({ error: 'Invalid host format' });
   }
   
@@ -61,10 +66,15 @@ router.get('/ping', (req, res) => {
 router.post('/backup', authenticate, (req, res) => {
   const filename = req.body.filename;
   
+  // Prevent type confusion - ensure filename is a string, not an array
+  if (typeof filename !== 'string') {
+    return res.status(400).json({ error: 'Invalid filename format. Only alphanumeric characters, hyphens, and underscores are allowed.' });
+  }
+  
   // Validate filename - only allow alphanumeric, hyphens, and underscores
   const filenameRegex = /^[a-zA-Z0-9_-]+$/;
   
-  if (!filename || !filenameRegex.test(filename)) {
+  if (!filenameRegex.test(filename)) {
     return res.status(400).json({ error: 'Invalid filename format. Only alphanumeric characters, hyphens, and underscores are allowed.' });
   }
   
@@ -83,6 +93,11 @@ router.post('/backup', authenticate, (req, res) => {
 // CWE-78: Using execFile with arguments array prevents shell injection
 router.get('/lookup', (req, res) => {
   const domain = req.query.domain;
+  
+  // Prevent type confusion - ensure domain is a string, not an array
+  if (typeof domain !== 'string') {
+    return res.status(400).json({ error: 'Invalid domain format' });
+  }
   
   // Validate domain format using helper function to avoid ReDoS
   if (!isValidHostname(domain)) {
@@ -112,11 +127,16 @@ router.get('/config', authenticate, (req, res) => {
 router.get('/safe-ping', (req, res) => {
   const host = req.query.host;
   
+  // Prevent type confusion - ensure host is a string, not an array
+  if (typeof host !== 'string') {
+    return res.status(400).json({ error: 'Invalid host format' });
+  }
+  
   // Validate input format (IP address or hostname)
   // Using simple regex for IP to avoid ReDoS, and helper function for hostname
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
   
-  if (!host || (!ipRegex.test(host) && !isValidHostname(host))) {
+  if (!ipRegex.test(host) && !isValidHostname(host)) {
     return res.status(400).json({ error: 'Invalid host format' });
   }
   
