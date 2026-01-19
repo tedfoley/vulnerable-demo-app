@@ -1450,7 +1450,65 @@
         "url": "https://app.devin.ai/sessions/devin-14a3448cf62e472db192beef595e3b01",
         "status": "pending",
         "batchId": "",
-        "structuredOutput": null,
+        "structuredOutput": {
+          "fixes": [
+            {
+              "status": "pending",
+              "filePath": "src/routes/admin.js",
+              "fixedCode": "",
+              "alertNumber": 12,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            },
+            {
+              "status": "pending",
+              "filePath": "src/routes/users.js",
+              "fixedCode": "",
+              "alertNumber": 11,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            },
+            {
+              "status": "pending",
+              "filePath": "src/routes/admin.js",
+              "fixedCode": "",
+              "alertNumber": 10,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            },
+            {
+              "status": "pending",
+              "filePath": "src/routes/users.js",
+              "fixedCode": "",
+              "alertNumber": 9,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            },
+            {
+              "status": "pending",
+              "filePath": "src/routes/admin.js",
+              "fixedCode": "",
+              "alertNumber": 8,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            }
+          ],
+          "prUrl": null,
+          "progress": 0,
+          "currentTask": "Analyze and fix CodeQL security vulnerabilities related to missing rate limiting.",
+          "confidenceScore": 0,
+          "confidenceExplanation": "No fixes have been implemented yet."
+        },
         "createdAt": "2026-01-19T22:57:23.232802Z",
         "updatedAt": "2026-01-19T22:57:54.305657Z",
         "messages": [
