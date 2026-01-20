@@ -1388,39 +1388,39 @@
             {
               "status": "completed",
               "filePath": "src/routes/files.js",
-              "fixedCode": "if (typeof filename !== 'string') {\n    return res.status(400).json({ error: 'Invalid filename parameter' });\n}",
-              "alertNumber": 26,
-              "explanation": "Added type validation to ensure 'filename' is always a string, preventing type confusion when the parameter is passed as an array.",
-              "testsPassed": true,
-              "originalCode": "if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\\\')) {",
-              "confidenceScore": 1
-            },
-            {
-              "status": "completed",
-              "filePath": "src/routes/files.js",
-              "fixedCode": "if (typeof filename !== 'string') {\n    return res.status(400).json({ error: 'Invalid filename parameter' });\n}",
-              "alertNumber": 25,
-              "explanation": "Added type validation to ensure 'filename' is always a string, preventing type confusion when the parameter is passed as an array.",
-              "testsPassed": true,
-              "originalCode": "if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\\\')) {",
-              "confidenceScore": 1
-            },
-            {
-              "status": "completed",
-              "filePath": "src/routes/files.js",
-              "fixedCode": "if (typeof filename !== 'string') {\n    return res.status(400).json({ error: 'Invalid filename parameter' });\n}",
+              "fixedCode": "const filename = req.query.filename;\n\n// Security fix: Prevent type confusion through parameter tampering (CWE-843)\nif (typeof filename !== 'string') {\n  return res.status(400).json({ error: 'Invalid filename parameter' });\n}\n\n// SAFE: Validate filename doesn't contain path traversal\nif (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {",
               "alertNumber": 24,
-              "explanation": "Added type validation to ensure 'filename' is always a string, preventing type confusion when the parameter is passed as an array.",
+              "explanation": "Added type check to ensure filename is a string, preventing type confusion when arrays are passed.",
               "testsPassed": true,
-              "originalCode": "if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\\\')) {",
-              "confidenceScore": 1
+              "originalCode": "const filename = req.query.filename;\n\n// SAFE: Validate filename doesn't contain path traversal\nif (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {",
+              "confidenceScore": 0.95
+            },
+            {
+              "status": "completed",
+              "filePath": "src/routes/files.js",
+              "fixedCode": "const filename = req.query.filename;\n\n// Security fix: Prevent type confusion through parameter tampering (CWE-843)\nif (typeof filename !== 'string') {\n  return res.status(400).json({ error: 'Invalid filename parameter' });\n}\n\n// SAFE: Validate filename doesn't contain path traversal\nif (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {",
+              "alertNumber": 25,
+              "explanation": "Same fix addresses all 3 alerts on the same line.",
+              "testsPassed": true,
+              "originalCode": "const filename = req.query.filename;\n\n// SAFE: Validate filename doesn't contain path traversal\nif (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {",
+              "confidenceScore": 0.95
+            },
+            {
+              "status": "completed",
+              "filePath": "src/routes/files.js",
+              "fixedCode": "const filename = req.query.filename;\n\n// Security fix: Prevent type confusion through parameter tampering (CWE-843)\nif (typeof filename !== 'string') {\n  return res.status(400).json({ error: 'Invalid filename parameter' });\n}\n\n// SAFE: Validate filename doesn't contain path traversal\nif (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {",
+              "alertNumber": 26,
+              "explanation": "Same fix addresses all 3 alerts on the same line.",
+              "testsPassed": true,
+              "originalCode": "const filename = req.query.filename;\n\n// SAFE: Validate filename doesn't contain path traversal\nif (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {",
+              "confidenceScore": 0.95
             }
           ],
           "prUrl": "https://github.com/tedfoley/vulnerable-demo-app/pull/5",
           "progress": 100,
-          "currentTask": "Waiting for CI checks to pass",
-          "confidenceScore": 1,
-          "confidenceExplanation": "The fix is straightforward and follows established security patterns, ensuring that the parameter is validated correctly."
+          "currentTask": "completed",
+          "confidenceScore": 0.95,
+          "confidenceExplanation": "High confidence - standard security pattern for Express.js type confusion. The fix follows best practices by validating parameter type before use."
         },
         "createdAt": "2026-01-20T00:06:04.234565Z",
         "updatedAt": "2026-01-20T00:10:18.646799Z",
