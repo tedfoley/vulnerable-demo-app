@@ -1456,10 +1456,10 @@
             }
           ],
           "prUrl": null,
-          "progress": 0,
-          "currentTask": "Analyze affected files and implement rate limiting for the alerts.",
+          "progress": 20,
+          "currentTask": "Analyze vulnerable files (src/routes/admin.js and src/routes/users.js)",
           "confidenceScore": 0,
-          "confidenceExplanation": "No fixes have been implemented yet."
+          "confidenceExplanation": "No fixes have been implemented yet, so confidence is low."
         },
         "createdAt": "2026-01-20T00:06:04.641702Z",
         "updatedAt": "2026-01-20T00:06:24.028184Z",
