@@ -1351,9 +1351,9 @@
           ],
           "prUrl": "https://github.com/tedfoley/vulnerable-demo-app/pull/6",
           "progress": 100,
-          "currentTask": "Investigate remaining CodeQL alerts and determine if they need fixing",
+          "currentTask": "Fix remaining CodeQL alerts and ensure CI passes.",
           "confidenceScore": 1,
-          "confidenceExplanation": "All identified vulnerabilities have been addressed with appropriate fixes and validations."
+          "confidenceExplanation": "All critical command injection vulnerabilities have been addressed, and the regex patterns have been simplified to avoid ReDoS vulnerabilities."
         },
         "createdAt": "2026-01-20T00:06:03.698976Z",
         "updatedAt": "2026-01-20T00:09:57.329978Z",
