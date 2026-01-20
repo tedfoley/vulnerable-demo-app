@@ -1459,7 +1459,7 @@
               "alertNumber": 12,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "exec('ping -c 4 ' + host, (error, stdout, stderr) => {",
               "confidenceScore": 0
             },
             {
@@ -1469,7 +1469,7 @@
               "alertNumber": 11,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "const query = \"SELECT id, username, email FROM users WHERE username = '\" + username + \"'\";",
               "confidenceScore": 0
             },
             {
@@ -1479,7 +1479,7 @@
               "alertNumber": 10,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "exec('ping -c 4 ' + host, (error, stdout, stderr) => {",
               "confidenceScore": 0
             },
             {
@@ -1489,7 +1489,7 @@
               "alertNumber": 9,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "const query = \"SELECT id, username, email FROM users WHERE username = '\" + username + \"'\";",
               "confidenceScore": 0
             },
             {
@@ -1499,15 +1499,15 @@
               "alertNumber": 8,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "exec('ping -c 4 ' + host, (error, stdout, stderr) => {",
               "confidenceScore": 0
             }
           ],
           "prUrl": null,
-          "progress": 20,
-          "currentTask": "Analyze vulnerable files (src/routes/admin.js and src/routes/users.js)",
+          "progress": 40,
+          "currentTask": "Implement rate limiting for identified routes",
           "confidenceScore": 0,
-          "confidenceExplanation": "No fixes have been implemented yet, so confidence is low."
+          "confidenceExplanation": "No fixes have been implemented yet."
         },
         "createdAt": "2026-01-20T00:06:04.641702Z",
         "updatedAt": "2026-01-20T00:06:24.028184Z",
