@@ -1466,7 +1466,7 @@
               "filePath": "src/routes/admin.js",
               "fixedCode": "router.get('/safe-ping', systemCommandLimiter, (req, res) => {",
               "alertNumber": 12,
-              "explanation": "Added rate limiting to prevent abuse of the /safe-ping endpoint.",
+              "explanation": "Added rate limiting to prevent abuse of the /safe-ping route which executes a system command.",
               "testsPassed": null,
               "originalCode": "router.get('/safe-ping', (req, res) => {",
               "confidenceScore": 0.9
@@ -1474,29 +1474,9 @@
             {
               "status": "completed",
               "filePath": "src/routes/users.js",
-              "fixedCode": "router.get('/safe-search', searchLimiter, (req, res) => {",
-              "alertNumber": 11,
-              "explanation": "Added rate limiting to the /safe-search endpoint to mitigate excessive requests.",
-              "testsPassed": null,
-              "originalCode": "router.get('/safe-search', (req, res) => {",
-              "confidenceScore": 0.9
-            },
-            {
-              "status": "completed",
-              "filePath": "src/routes/admin.js",
-              "fixedCode": "router.get('/lookup', systemCommandLimiter, (req, res) => {",
-              "alertNumber": 10,
-              "explanation": "Implemented rate limiting for the /lookup endpoint to prevent abuse.",
-              "testsPassed": null,
-              "originalCode": "router.get('/lookup', (req, res) => {",
-              "confidenceScore": 0.9
-            },
-            {
-              "status": "completed",
-              "filePath": "src/routes/users.js",
               "fixedCode": "router.post('/login', loginLimiter, (req, res) => {",
-              "alertNumber": 9,
-              "explanation": "Added rate limiting to the /login endpoint to prevent brute force attacks.",
+              "alertNumber": 11,
+              "explanation": "Added rate limiting to the /login route to prevent brute force attacks.",
               "testsPassed": null,
               "originalCode": "router.post('/login', (req, res) => {",
               "confidenceScore": 0.9
@@ -1504,19 +1484,39 @@
             {
               "status": "completed",
               "filePath": "src/routes/admin.js",
+              "fixedCode": "router.get('/lookup', systemCommandLimiter, (req, res) => {",
+              "alertNumber": 10,
+              "explanation": "Added rate limiting to the /lookup route which executes a system command.",
+              "testsPassed": null,
+              "originalCode": "router.get('/lookup', (req, res) => {",
+              "confidenceScore": 0.9
+            },
+            {
+              "status": "completed",
+              "filePath": "src/routes/users.js",
+              "fixedCode": "router.get('/safe-search', searchLimiter, (req, res) => {",
+              "alertNumber": 9,
+              "explanation": "Added rate limiting to the /safe-search route to control database access.",
+              "testsPassed": null,
+              "originalCode": "router.get('/safe-search', (req, res) => {",
+              "confidenceScore": 0.9
+            },
+            {
+              "status": "completed",
+              "filePath": "src/routes/admin.js",
               "fixedCode": "router.post('/backup', systemCommandLimiter, authenticate, (req, res) => {",
               "alertNumber": 8,
-              "explanation": "Implemented rate limiting for the /backup endpoint to mitigate abuse.",
+              "explanation": "Added rate limiting to the /backup route which executes a system command.",
               "testsPassed": null,
-              "originalCode": "router.post('/backup', authenticate, (req, res) => {",
+              "originalCode": "router.post('/backup', (req, res) => {",
               "confidenceScore": 0.9
             }
           ],
-          "prUrl": null,
+          "prUrl": "https://github.com/tedfoley/vulnerable-demo-app/pull/7",
           "progress": 100,
-          "currentTask": "Implement rate limiting for users.js routes (Alerts #9, #11)",
+          "currentTask": "Waiting for CI checks to pass after creating the PR.",
           "confidenceScore": 0.9,
-          "confidenceExplanation": "The fixes are straightforward and follow established security patterns."
+          "confidenceExplanation": "The fixes are straightforward and follow established security patterns, but the lack of automated tests means some uncertainty remains."
         },
         "createdAt": "2026-01-20T00:06:04.641702Z",
         "updatedAt": "2026-01-20T00:11:20.379334Z",
