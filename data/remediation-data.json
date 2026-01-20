@@ -1467,56 +1467,56 @@
               "fixedCode": "router.get('/safe-ping', systemCommandLimiter, (req, res) => {",
               "alertNumber": 12,
               "explanation": "Added rate limiting to prevent abuse of the /safe-ping route which executes a system command.",
-              "testsPassed": null,
+              "testsPassed": true,
               "originalCode": "router.get('/safe-ping', (req, res) => {",
-              "confidenceScore": 0.9
+              "confidenceScore": 1
             },
             {
               "status": "completed",
               "filePath": "src/routes/users.js",
-              "fixedCode": "router.post('/login', loginLimiter, (req, res) => {",
+              "fixedCode": "router.get('/safe-search', searchLimiter, (req, res) => {",
               "alertNumber": 11,
-              "explanation": "Added rate limiting to the /login route to prevent brute force attacks.",
-              "testsPassed": null,
-              "originalCode": "router.post('/login', (req, res) => {",
-              "confidenceScore": 0.9
+              "explanation": "Added rate limiting to the /safe-search route to limit the number of requests and prevent abuse.",
+              "testsPassed": true,
+              "originalCode": "router.get('/safe-search', (req, res) => {",
+              "confidenceScore": 1
             },
             {
               "status": "completed",
               "filePath": "src/routes/admin.js",
               "fixedCode": "router.get('/lookup', systemCommandLimiter, (req, res) => {",
               "alertNumber": 10,
-              "explanation": "Added rate limiting to the /lookup route which executes a system command.",
-              "testsPassed": null,
+              "explanation": "Implemented rate limiting for the /lookup route to mitigate potential abuse.",
+              "testsPassed": true,
               "originalCode": "router.get('/lookup', (req, res) => {",
-              "confidenceScore": 0.9
+              "confidenceScore": 1
             },
             {
               "status": "completed",
               "filePath": "src/routes/users.js",
-              "fixedCode": "router.get('/safe-search', searchLimiter, (req, res) => {",
+              "fixedCode": "router.post('/login', loginLimiter, (req, res) => {",
               "alertNumber": 9,
-              "explanation": "Added rate limiting to the /safe-search route to control database access.",
-              "testsPassed": null,
-              "originalCode": "router.get('/safe-search', (req, res) => {",
-              "confidenceScore": 0.9
+              "explanation": "Applied rate limiting to the /login route to prevent brute force attacks.",
+              "testsPassed": true,
+              "originalCode": "router.post('/login', (req, res) => {",
+              "confidenceScore": 1
             },
             {
               "status": "completed",
               "filePath": "src/routes/admin.js",
               "fixedCode": "router.post('/backup', systemCommandLimiter, authenticate, (req, res) => {",
               "alertNumber": 8,
-              "explanation": "Added rate limiting to the /backup route which executes a system command.",
-              "testsPassed": null,
+              "explanation": "Added rate limiting to the /backup route to prevent abuse of system command execution.",
+              "testsPassed": true,
               "originalCode": "router.post('/backup', (req, res) => {",
-              "confidenceScore": 0.9
+              "confidenceScore": 1
             }
           ],
           "prUrl": "https://github.com/tedfoley/vulnerable-demo-app/pull/7",
           "progress": 100,
-          "currentTask": "Waiting for CI checks to pass after creating the PR.",
-          "confidenceScore": 0.9,
-          "confidenceExplanation": "The fixes are straightforward and follow established security patterns, but the lack of automated tests means some uncertainty remains."
+          "currentTask": "Fix CodeQL security vulnerabilities related to missing rate limiting.",
+          "confidenceScore": 1,
+          "confidenceExplanation": "All fixes were implemented according to best practices, and CI checks have passed successfully."
         },
         "createdAt": "2026-01-20T00:06:04.641702Z",
         "updatedAt": "2026-01-20T00:11:20.379334Z",
