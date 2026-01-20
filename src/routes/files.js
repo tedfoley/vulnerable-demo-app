@@ -56,6 +56,13 @@ router.post('/write', (req, res) => {
 router.get('/safe-read', (req, res) => {
   const filename = req.query.filename;
   
+  // Security fix: Prevent type confusion through parameter tampering (CWE-843)
+  // req.query parameters can be arrays if passed multiple times, which would
+  // cause includes() to check array membership instead of substring matching
+  if (typeof filename !== 'string') {
+    return res.status(400).json({ error: 'Invalid filename parameter' });
+  }
+  
   // SAFE: Validate filename doesn't contain path traversal
   if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
     return res.status(400).json({ error: 'Invalid filename' });
