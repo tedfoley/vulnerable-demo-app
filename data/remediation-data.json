@@ -1309,14 +1309,14 @@
         "structuredOutput": {
           "fixes": [
             {
-              "status": "pending",
+              "status": "in_progress",
               "filePath": "src/routes/admin.js",
-              "fixedCode": "",
+              "fixedCode": "execFile('ping', ['-c', '4', host], (error, stdout, stderr) => {",
               "alertNumber": 13,
-              "explanation": "",
+              "explanation": "Replaced exec with execFile to prevent command injection by using an argument array.",
               "testsPassed": false,
-              "originalCode": "",
-              "confidenceScore": 0
+              "originalCode": "exec('ping -c 4 ' + host, (error, stdout, stderr) => {",
+              "confidenceScore": 0.9
             },
             {
               "status": "pending",
@@ -1325,7 +1325,7 @@
               "alertNumber": 14,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "exec(`tar -czf /tmp/${filename}.tar.gz /var/log`, (error, stdout, stderr) => {",
               "confidenceScore": 0
             },
             {
@@ -1335,7 +1335,7 @@
               "alertNumber": 15,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "const command = 'nslookup ' + domain;",
               "confidenceScore": 0
             },
             {
@@ -1345,15 +1345,15 @@
               "alertNumber": 16,
               "explanation": "",
               "testsPassed": false,
-              "originalCode": "",
+              "originalCode": "exec(`ping -c 4 ${host}`, (error, stdout, stderr) => {",
               "confidenceScore": 0
             }
           ],
           "prUrl": null,
-          "progress": 0,
-          "currentTask": "Analyze and fix CodeQL security vulnerabilities in src/routes/admin.js",
-          "confidenceScore": 0,
-          "confidenceExplanation": "No fixes have been implemented yet."
+          "progress": 25,
+          "currentTask": "Implement fixes for CodeQL command-line injection vulnerabilities",
+          "confidenceScore": 0.9,
+          "confidenceExplanation": "The fix for Alert #13 is straightforward and follows security best practices, while the others are pending implementation."
         },
         "createdAt": "2026-01-20T00:06:03.698976Z",
         "updatedAt": "2026-01-20T00:06:55.131022Z",
