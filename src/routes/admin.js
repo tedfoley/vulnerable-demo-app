@@ -20,11 +20,22 @@ router.get('/ping', (req, res) => {
   const host = req.query.host;
   
   // Validate input: only allow valid IP addresses or hostnames
+  // Using simple character allowlist to avoid regex backtracking vulnerabilities
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
-  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
+  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9.-]{0,253}[a-zA-Z0-9]$/;
   
-  if (!host || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
+  if (!host || host.length > 255 || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
     return res.status(400).json({ error: 'Invalid host format' });
+  }
+  
+  // Additional check: hostname segments must not start/end with hyphen
+  if (!ipRegex.test(host)) {
+    const segments = host.split('.');
+    for (const segment of segments) {
+      if (segment.startsWith('-') || segment.endsWith('-') || segment.length === 0 || segment.length > 63) {
+        return res.status(400).json({ error: 'Invalid host format' });
+      }
+    }
   }
   
   // SECURE: Using execFile with arguments array prevents shell injection
@@ -66,10 +77,19 @@ router.get('/lookup', (req, res) => {
   const domain = req.query.domain;
   
   // Validate input: only allow valid domain names
-  const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
+  // Using simple character allowlist to avoid regex backtracking vulnerabilities
+  const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9.-]{0,253}[a-zA-Z0-9]$/;
   
-  if (!domain || !domainRegex.test(domain)) {
+  if (!domain || domain.length > 255 || !domainRegex.test(domain)) {
     return res.status(400).json({ error: 'Invalid domain format' });
+  }
+  
+  // Additional check: domain segments must not start/end with hyphen
+  const segments = domain.split('.');
+  for (const segment of segments) {
+    if (segment.startsWith('-') || segment.endsWith('-') || segment.length === 0 || segment.length > 63) {
+      return res.status(400).json({ error: 'Invalid domain format' });
+    }
   }
   
   // SECURE: Using execFile with arguments array prevents shell injection
@@ -96,11 +116,22 @@ router.get('/safe-ping', (req, res) => {
   const host = req.query.host;
   
   // Validate input: only allow valid IP addresses or hostnames
+  // Using simple character allowlist to avoid regex backtracking vulnerabilities
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
-  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
+  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9.-]{0,253}[a-zA-Z0-9]$/;
   
-  if (!host || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
+  if (!host || host.length > 255 || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
     return res.status(400).json({ error: 'Invalid host format' });
+  }
+  
+  // Additional check: hostname segments must not start/end with hyphen
+  if (!ipRegex.test(host)) {
+    const segments = host.split('.');
+    for (const segment of segments) {
+      if (segment.startsWith('-') || segment.endsWith('-') || segment.length === 0 || segment.length > 63) {
+        return res.status(400).json({ error: 'Invalid host format' });
+      }
+    }
   }
   
   // SECURE: Using execFile with arguments array prevents shell injection
