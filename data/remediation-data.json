@@ -1335,7 +1335,45 @@
         "url": "https://app.devin.ai/sessions/devin-26eefff3c26c40c4a67a8ec9edc7138f",
         "status": "pending",
         "batchId": "",
-        "structuredOutput": null,
+        "structuredOutput": {
+          "fixes": [
+            {
+              "status": "pending",
+              "filePath": "src/routes/files.js",
+              "fixedCode": "",
+              "alertNumber": 26,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            },
+            {
+              "status": "pending",
+              "filePath": "src/routes/files.js",
+              "fixedCode": "",
+              "alertNumber": 25,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            },
+            {
+              "status": "pending",
+              "filePath": "src/routes/files.js",
+              "fixedCode": "",
+              "alertNumber": 24,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            }
+          ],
+          "prUrl": null,
+          "progress": 0,
+          "currentTask": "Analyze the vulnerability in src/routes/files.js line 60",
+          "confidenceScore": 0,
+          "confidenceExplanation": "No fixes have been implemented yet."
+        },
         "createdAt": "2026-01-20T00:06:04.234565Z",
         "updatedAt": "2026-01-20T00:06:30.328559Z",
         "messages": [
