@@ -2,6 +2,15 @@ const express = require('express');
 const router = express.Router();
 const { execFile } = require('child_process');
 
+// Helper function to validate hostname without ReDoS-vulnerable regex
+function isValidHostname(hostname) {
+  if (!hostname || hostname.length > 253) return false;
+  const labels = hostname.split('.');
+  // Simple label regex without nested quantifiers (safe from ReDoS)
+  const labelRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/;
+  return labels.every(label => label.length > 0 && label.length <= 63 && labelRegex.test(label));
+}
+
 // Simple authentication middleware using environment variable
 const authenticate = (req, res, next) => {
   const authHeader = req.headers['x-admin-auth'];
@@ -21,9 +30,8 @@ router.get('/ping', (req, res) => {
   
   // Validate input format (IP address or hostname)
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
-  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
   
-  if (!host || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
+  if (!host || (!ipRegex.test(host) && !isValidHostname(host))) {
     return res.status(400).json({ error: 'Invalid host format' });
   }
   
@@ -66,9 +74,8 @@ router.get('/lookup', (req, res) => {
   
   // Validate domain format (hostname or IP address)
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
-  const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
   
-  if (!domain || (!ipRegex.test(domain) && !domainRegex.test(domain))) {
+  if (!domain || (!ipRegex.test(domain) && !isValidHostname(domain))) {
     return res.status(400).json({ error: 'Invalid domain format' });
   }
   
@@ -97,9 +104,8 @@ router.get('/safe-ping', (req, res) => {
   
   // Validate input before using in command
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
-  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
   
-  if (!host || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
+  if (!host || (!ipRegex.test(host) && !isValidHostname(host))) {
     return res.status(400).json({ error: 'Invalid host format' });
   }
   
