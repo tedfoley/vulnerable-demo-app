@@ -1402,7 +1402,65 @@
         "url": "https://app.devin.ai/sessions/devin-e31708ff77d740b18179e19022481c61",
         "status": "pending",
         "batchId": "",
-        "structuredOutput": null,
+        "structuredOutput": {
+          "fixes": [
+            {
+              "status": "pending",
+              "filePath": "src/routes/admin.js",
+              "fixedCode": "",
+              "alertNumber": 12,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            },
+            {
+              "status": "pending",
+              "filePath": "src/routes/users.js",
+              "fixedCode": "",
+              "alertNumber": 11,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            },
+            {
+              "status": "pending",
+              "filePath": "src/routes/admin.js",
+              "fixedCode": "",
+              "alertNumber": 10,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            },
+            {
+              "status": "pending",
+              "filePath": "src/routes/users.js",
+              "fixedCode": "",
+              "alertNumber": 9,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            },
+            {
+              "status": "pending",
+              "filePath": "src/routes/admin.js",
+              "fixedCode": "",
+              "alertNumber": 8,
+              "explanation": "",
+              "testsPassed": false,
+              "originalCode": "",
+              "confidenceScore": 0
+            }
+          ],
+          "prUrl": null,
+          "progress": 0,
+          "currentTask": "Analyze affected files and implement rate limiting for the alerts.",
+          "confidenceScore": 0,
+          "confidenceExplanation": "No fixes have been implemented yet."
+        },
         "createdAt": "2026-01-20T00:06:04.641702Z",
         "updatedAt": "2026-01-20T00:06:24.028184Z",
         "messages": [
