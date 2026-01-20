@@ -1,6 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('better-sqlite3');
+const rateLimit = require('express-rate-limit');
+
+// Rate limiter for login endpoint - strict limits to prevent brute force attacks
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 login attempts per windowMs
+  message: { error: 'Too many login attempts, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Rate limiter for database search endpoints
+const searchLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 30, // Limit each IP to 30 requests per windowMs
+  message: { error: 'Too many requests, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 const db = new Database(':memory:');
 
@@ -54,7 +73,7 @@ router.get('/find', (req, res) => {
 
 // TODO: Fix this security issue - SQL Injection vulnerability #3
 // CWE-89: Improper Neutralization of Special Elements used in an SQL Command
-router.post('/login', (req, res) => {
+router.post('/login', loginLimiter, (req, res) => {
   const { username, password } = req.body;
   
   // VULNERABLE: String concatenation for authentication query
@@ -73,7 +92,7 @@ router.post('/login', (req, res) => {
 });
 
 // Safe endpoint for comparison (not vulnerable)
-router.get('/safe-search', (req, res) => {
+router.get('/safe-search', searchLimiter, (req, res) => {
   const username = req.query.username;
   
   // SAFE: Using parameterized query
