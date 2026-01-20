@@ -1390,40 +1390,40 @@
               "filePath": "src/routes/files.js",
               "fixedCode": "if (typeof filename !== 'string') { return res.status(400).json({ error: 'Invalid filename parameter' }); } if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\\\')) {",
               "alertNumber": 26,
-              "explanation": "The fix ensures that the filename parameter is validated as a string to prevent type confusion, which could allow an attacker to bypass security checks by passing an array.",
+              "explanation": "Added type validation to ensure 'filename' is a string to prevent type confusion attacks. This addresses the potential for an attacker to bypass security checks by passing an array instead of a string.",
               "testsPassed": null,
               "originalCode": "if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\\\')) {",
               "confidenceScore": 0.9
             },
             {
-              "status": "pending",
+              "status": "completed",
               "filePath": "src/routes/files.js",
-              "fixedCode": null,
+              "fixedCode": "if (typeof filename !== 'string') { return res.status(400).json({ error: 'Invalid filename parameter' }); } if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\\\')) {",
               "alertNumber": 25,
-              "explanation": null,
+              "explanation": "Added type validation to ensure 'filename' is a string to prevent type confusion attacks. This addresses the potential for an attacker to bypass security checks by passing an array instead of a string.",
               "testsPassed": null,
               "originalCode": "if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\\\')) {",
-              "confidenceScore": null
+              "confidenceScore": 0.9
             },
             {
-              "status": "pending",
+              "status": "completed",
               "filePath": "src/routes/files.js",
-              "fixedCode": null,
+              "fixedCode": "if (typeof filename !== 'string') { return res.status(400).json({ error: 'Invalid filename parameter' }); } if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\\\')) {",
               "alertNumber": 24,
-              "explanation": null,
+              "explanation": "Added type validation to ensure 'filename' is a string to prevent type confusion attacks. This addresses the potential for an attacker to bypass security checks by passing an array instead of a string.",
               "testsPassed": null,
               "originalCode": "if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\\\')) {",
-              "confidenceScore": null
+              "confidenceScore": 0.9
             }
           ],
-          "prUrl": null,
-          "progress": 50,
-          "currentTask": "Implement fixes for CodeQL alerts related to type confusion.",
+          "prUrl": "https://github.com/tedfoley/vulnerable-demo-app/pull/5",
+          "progress": 80,
+          "currentTask": "Waiting for CI checks to pass",
           "confidenceScore": 0.9,
-          "confidenceExplanation": "The fix is straightforward and follows established security patterns, but further testing is needed to confirm all alerts are resolved."
+          "confidenceExplanation": "The fix is straightforward and follows established security patterns, leading to high confidence in its effectiveness."
         },
         "createdAt": "2026-01-20T00:06:04.234565Z",
-        "updatedAt": "2026-01-20T00:06:30.328559Z",
+        "updatedAt": "2026-01-20T00:08:43.148699Z",
         "messages": [
           {
             "type": "initial_user_message",
