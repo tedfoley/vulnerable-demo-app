@@ -58,10 +58,15 @@ router.get('/ping', (req, res) => {
 router.post('/backup', authenticate, (req, res) => {
   const filename = req.body.filename;
   
+  // Prevent type confusion: ensure filename is a string
+  if (typeof filename !== 'string') {
+    return res.status(400).json({ error: 'Invalid filename format. Only alphanumeric characters, hyphens, and underscores are allowed.' });
+  }
+  
   // Validate input: only allow alphanumeric characters, hyphens, and underscores
   const filenameRegex = /^[a-zA-Z0-9_-]+$/;
   
-  if (!filename || !filenameRegex.test(filename)) {
+  if (!filenameRegex.test(filename)) {
     return res.status(400).json({ error: 'Invalid filename format. Only alphanumeric characters, hyphens, and underscores are allowed.' });
   }
   
