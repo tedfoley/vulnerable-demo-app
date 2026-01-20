@@ -19,12 +19,17 @@ const authenticate = (req, res, next) => {
 router.get('/ping', (req, res) => {
   const host = req.query.host;
   
+  // Prevent type confusion: ensure host is a string, not an array
+  if (typeof host !== 'string') {
+    return res.status(400).json({ error: 'Invalid host format' });
+  }
+  
   // Validate input: only allow valid IP addresses or hostnames
   // Using simple character allowlist to avoid regex backtracking vulnerabilities
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
   const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9.-]{0,253}[a-zA-Z0-9]$/;
   
-  if (!host || host.length > 255 || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
+  if (host.length > 255 || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
     return res.status(400).json({ error: 'Invalid host format' });
   }
   
@@ -76,11 +81,16 @@ router.post('/backup', authenticate, (req, res) => {
 router.get('/lookup', (req, res) => {
   const domain = req.query.domain;
   
+  // Prevent type confusion: ensure domain is a string, not an array
+  if (typeof domain !== 'string') {
+    return res.status(400).json({ error: 'Invalid domain format' });
+  }
+  
   // Validate input: only allow valid domain names
   // Using simple character allowlist to avoid regex backtracking vulnerabilities
   const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9.-]{0,253}[a-zA-Z0-9]$/;
   
-  if (!domain || domain.length > 255 || !domainRegex.test(domain)) {
+  if (domain.length > 255 || !domainRegex.test(domain)) {
     return res.status(400).json({ error: 'Invalid domain format' });
   }
   
@@ -115,12 +125,17 @@ router.get('/config', authenticate, (req, res) => {
 router.get('/safe-ping', (req, res) => {
   const host = req.query.host;
   
+  // Prevent type confusion: ensure host is a string, not an array
+  if (typeof host !== 'string') {
+    return res.status(400).json({ error: 'Invalid host format' });
+  }
+  
   // Validate input: only allow valid IP addresses or hostnames
   // Using simple character allowlist to avoid regex backtracking vulnerabilities
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
   const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9.-]{0,253}[a-zA-Z0-9]$/;
   
-  if (!host || host.length > 255 || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
+  if (host.length > 255 || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
     return res.status(400).json({ error: 'Invalid host format' });
   }
   
