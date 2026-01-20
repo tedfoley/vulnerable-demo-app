@@ -2,9 +2,17 @@ const express = require('express');
 const router = express.Router();
 const { execFile } = require('child_process');
 
+// Helper function to safely extract string from request parameter (prevents type confusion)
+// Express query/body params can be arrays if sent multiple times, e.g., ?host=a&host=b
+function getStringParam(param) {
+  if (typeof param === 'string') return param;
+  if (Array.isArray(param) && param.length > 0 && typeof param[0] === 'string') return param[0];
+  return null;
+}
+
 // Helper function to validate hostname without ReDoS-vulnerable regex
 function isValidHostname(hostname) {
-  if (!hostname || hostname.length > 253) return false;
+  if (typeof hostname !== 'string' || hostname.length === 0 || hostname.length > 253) return false;
   const labels = hostname.split('.');
   // Simple label regex without nested quantifiers (safe from ReDoS)
   const labelRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/;
@@ -26,7 +34,7 @@ const authenticate = (req, res, next) => {
 // FIXED: Command Injection vulnerability #1
 // CWE-78: Using execFile with argument array prevents shell interpretation
 router.get('/ping', (req, res) => {
-  const host = req.query.host;
+  const host = getStringParam(req.query.host);
   
   // Validate input format (IP address or hostname)
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
@@ -48,7 +56,7 @@ router.get('/ping', (req, res) => {
 // FIXED: Command Injection vulnerability #2
 // CWE-78: Using execFile with argument array prevents shell interpretation
 router.post('/backup', authenticate, (req, res) => {
-  const filename = req.body.filename;
+  const filename = getStringParam(req.body.filename);
   
   // Validate filename (alphanumeric, hyphens, underscores only, no path traversal)
   const filenameRegex = /^[a-zA-Z0-9_-]+$/;
@@ -70,7 +78,7 @@ router.post('/backup', authenticate, (req, res) => {
 // FIXED: Command Injection vulnerability #3
 // CWE-78: Using execFile with argument array prevents shell interpretation
 router.get('/lookup', (req, res) => {
-  const domain = req.query.domain;
+  const domain = getStringParam(req.query.domain);
   
   // Validate domain format (hostname or IP address)
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
@@ -100,7 +108,7 @@ router.get('/config', authenticate, (req, res) => {
 // FIXED: Command Injection vulnerability #4 (was labeled "safe" but still used exec)
 // CWE-78: Using execFile with argument array prevents shell interpretation
 router.get('/safe-ping', (req, res) => {
-  const host = req.query.host;
+  const host = getStringParam(req.query.host);
   
   // Validate input before using in command
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
