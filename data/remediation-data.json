@@ -1309,51 +1309,21 @@
         "structuredOutput": {
           "fixes": [
             {
-              "status": "in_progress",
+              "status": "completed",
               "filePath": "src/routes/admin.js",
-              "fixedCode": "execFile('ping', ['-c', '4', host], (error, stdout, stderr) => {",
+              "fixedCode": "// FIXED: Command Injection vulnerability #1\n// CWE-78: Using execFile with argument array prevents command injection\nrouter.get('/ping', (req, res) => {\n  const host = req.query.host;\n  \n  // Validate input: only allow valid IP addresses or hostnames\n  const ipRegex = /^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$/;\n  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;\n  \n  if (!host || (!ipRegex.test(host) && !hostnameRegex.test(host))) {\n    return res.status(400).json({ error: 'Invalid host format' });\n  }\n  \n  // SECURE: Using execFile with arguments array prevents shell injection\n  execFile('ping', ['-c', '4', host], (error, stdout, stderr) => {\n    if (error) {\n      res.status(500).json({ error: stderr });\n    } else {\n      res.send(`<pre>${stdout}</pre>`);\n    }\n  });\n});",
               "alertNumber": 13,
-              "explanation": "Replaced exec with execFile to prevent command injection by using an argument array.",
+              "explanation": "Replaced exec with execFile to prevent command injection by using an argument array. Added input validation to ensure only valid IP addresses or hostnames are accepted.",
               "testsPassed": false,
-              "originalCode": "exec('ping -c 4 ' + host, (error, stdout, stderr) => {",
+              "originalCode": "// TODO: Fix this security issue - Command Injection vulnerability #1\n// CWE-78: Improper Neutralization of Special Elements used in an OS Command\nrouter.get('/ping', (req, res) => {\n  const host = req.query.host;\n  \n  // VULNERABLE: Direct command execution with user input\n  exec('ping -c 4 ' + host, (error, stdout, stderr) => {\n    if (error) {\n      res.status(500).json({ error: stderr });\n    } else {\n      res.send(`<pre>${stdout}</pre>`);\n    }\n  });\n});",
               "confidenceScore": 0.9
-            },
-            {
-              "status": "pending",
-              "filePath": "src/routes/admin.js",
-              "fixedCode": "",
-              "alertNumber": 14,
-              "explanation": "",
-              "testsPassed": false,
-              "originalCode": "exec(`tar -czf /tmp/${filename}.tar.gz /var/log`, (error, stdout, stderr) => {",
-              "confidenceScore": 0
-            },
-            {
-              "status": "pending",
-              "filePath": "src/routes/admin.js",
-              "fixedCode": "",
-              "alertNumber": 15,
-              "explanation": "",
-              "testsPassed": false,
-              "originalCode": "const command = 'nslookup ' + domain;",
-              "confidenceScore": 0
-            },
-            {
-              "status": "pending",
-              "filePath": "src/routes/admin.js",
-              "fixedCode": "",
-              "alertNumber": 16,
-              "explanation": "",
-              "testsPassed": false,
-              "originalCode": "exec(`ping -c 4 ${host}`, (error, stdout, stderr) => {",
-              "confidenceScore": 0
             }
           ],
           "prUrl": null,
           "progress": 25,
-          "currentTask": "Implement fixes for CodeQL command-line injection vulnerabilities",
+          "currentTask": "Analyze and fix Alert #14 (line 38) - command-line injection",
           "confidenceScore": 0.9,
-          "confidenceExplanation": "The fix for Alert #13 is straightforward and follows security best practices, while the others are pending implementation."
+          "confidenceExplanation": "The fix is straightforward, using well-understood security patterns to prevent command injection."
         },
         "createdAt": "2026-01-20T00:06:03.698976Z",
         "updatedAt": "2026-01-20T00:06:55.131022Z",
