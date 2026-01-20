@@ -200,7 +200,10 @@
         "groupKey": "critical-CWE-078",
         "severity": "critical",
         "priority": 108,
-        "status": "pending"
+        "status": "in_progress",
+        "sessionId": "devin-438dcb1799ed4b9b9ea65da57b31cd1f",
+        "sessionUrl": "https://app.devin.ai/sessions/438dcb1799ed4b9b9ea65da57b31cd1f",
+        "startedAt": "2026-01-20T00:06:03.829Z"
       },
       {
         "id": "3697520e-140d-4041-a99a-193798e9a0d9",
@@ -330,7 +333,10 @@
         "groupKey": "critical-CWE-843",
         "severity": "critical",
         "priority": 106,
-        "status": "pending"
+        "status": "in_progress",
+        "sessionId": "devin-26eefff3c26c40c4a67a8ec9edc7138f",
+        "sessionUrl": "https://app.devin.ai/sessions/26eefff3c26c40c4a67a8ec9edc7138f",
+        "startedAt": "2026-01-20T00:06:04.376Z"
       },
       {
         "id": "49d8c9c6-5bd5-4d52-aac9-b3b00bf0eea7",
@@ -560,7 +566,10 @@
         "groupKey": "high-CWE-307-part1",
         "severity": "high",
         "priority": 90,
-        "status": "pending"
+        "status": "in_progress",
+        "sessionId": "devin-e31708ff77d740b18179e19022481c61",
+        "sessionUrl": "https://app.devin.ai/sessions/e31708ff77d740b18179e19022481c61",
+        "startedAt": "2026-01-20T00:06:04.779Z"
       },
       {
         "id": "e1ed47ac-ac82-42e9-9aa4-8a32013ccd89",
@@ -1291,7 +1300,28 @@
         "status": "pending"
       }
     ],
-    "sessions": [],
+    "sessions": [
+      {
+        "sessionId": "devin-438dcb1799ed4b9b9ea65da57b31cd1f",
+        "url": "https://app.devin.ai/sessions/devin-438dcb1799ed4b9b9ea65da57b31cd1f",
+        "status": "pending",
+        "batchId": "",
+        "structuredOutput": null,
+        "createdAt": "2026-01-20T00:06:03.698976Z",
+        "updatedAt": "2026-01-20T00:06:03.941294Z",
+        "messages": [
+          {
+            "type": "initial_user_message",
+            "event_id": "event-c0fac0fbe5284c40a199b7be297a7ba7",
+            "message": "\n# CodeQL Security Vulnerability Remediation\n\nYou are tasked with fixing 4 CodeQL security vulnerabilities in the repository: tedfoley/vulnerable-demo-app\n\n## Batch Information\n- **Batch ID**: 0570b546-0fba-4ca9-9c4c-9818be5eabe6\n- **Group**: critical-CWE-078\n- **Severity**: critical\n- **Strategy**: severity-then-cwe\n\n## Alerts to Fix\n\n### Alert 1: js/command-line-injection\n- **Alert Number**: #16\n- **Severity**: critical\n- **CWE**: CWE-078, CWE-088\n- **File**: src/routes/admin.js\n- **Lines**: 84-84\n- **Description**: Uncontrolled command line\n- **Message**: This command line depends on a user-provided value.\n- **URL**: https://github.com/tedfoley/vulnerable-demo-app/security/code-scanning/16\n\n\n### Alert 2: js/command-line-injection\n- **Alert Number**: #15\n- **Severity**: critical\n- **CWE**: CWE-078, CWE-088\n- **File**: src/routes/admin.js\n- **Lines**: 55-55\n- **Description**: Uncontrolled command line\n- **Message**: This command line depends on a user-provided value.\n- **URL**: https://github.com/tedfoley/vulnerable-demo-app/security/code-scanning/15\n\n\n### Alert 3: js/command-line-injection\n- **Alert Number**: #14\n- **Severity**: critical\n- **CWE**: CWE-078, CWE-088\n- **File**: src/routes/admin.js\n- **Lines**: 38-38\n- **Description**: Uncontrolled command line\n- **Message**: This command line depends on a user-provided value.\n- **URL**: https://github.com/tedfoley/vulnerable-demo-app/security/code-scanning/14\n\n\n### Alert 4: js/command-line-injection\n- **Alert Number**: #13\n- **Severity**: critical\n- **CWE**: CWE-078, CWE-088\n- **File**: src/routes/admin.js\n- **Lines**: 23-23\n- **Description**: Uncontrolled command line\n- **Message**: This command line depends on a user-provided value.\n- **URL**: https://github.com/tedfoley/vulnerable-demo-app/security/code-scanning/13\n\n\n## Instructions\n\n1. **Clone the repository** and create a new branch named `fix/codeql-critical-CWE-078-1768867563143`\n\n2. **For each alert**, analyze the vulnerability and implement a secure fix:\n   - Understand the root cause of the vulnerability\n   - Implement a fix that addresses the security issue without breaking functionality\n   - Ensure the fix follows security best practices\n   - Add comments explaining the security fix if helpful\n\n3. **Test your changes**:\n   - Run any existing tests to ensure you haven't broken functionality\n   - If possible, verify the CodeQL alert would be resolved\n\n4. **Create a Pull Request** with:\n   - A clear title mentioning the CWE/vulnerability type\n   - A detailed description of each fix\n   - References to the original CodeQL alerts\n\n5. **Update structured output** after each significant step using this schema:\n\n{\n  \"fixes\": [\n    {\n      \"alertNumber\": <number>,\n      \"status\": \"pending\" | \"in_progress\" | \"completed\" | \"failed\",\n      \"filePath\": \"<string>\",\n      \"originalCode\": \"<string>\",\n      \"fixedCode\": \"<string>\",\n      \"explanation\": \"<string>\",\n      \"confidenceScore\": <0.0-1.0>,\n      \"testsPassed\": <boolean>\n    }\n  ],\n  \"currentTask\": \"<string>\",\n  \"progress\": <0-100>,\n  \"prUrl\": \"<string or null>\",\n  \"confidenceScore\": <0.0-1.0>,\n  \"confidenceExplanation\": \"<string>\"\n}\n\n\n## Confidence Scoring Guidelines\n\nWhen assessing your confidence score (0.0-1.0), consider:\n- **0.9-1.0**: Simple, well-understood fix with clear security pattern\n- **0.7-0.9**: Standard fix with good understanding, minor uncertainty\n- **0.5-0.7**: Fix implemented but some uncertainty about edge cases\n- **0.3-0.5**: Significant uncertainty, may need human review\n- **0.0-0.3**: Low confidence, complex issue or unclear solution\n\nPlease update the structured output immediately after:\n- Starting work on each alert\n- Completing each fix\n- Running tests\n- Creating the PR\n\nBegin by cloning the repository and analyzing the first alert.\n",
+            "timestamp": "2026-01-20T00:06:03.702857+00:00",
+            "username": "tedfoley7",
+            "origin": "api",
+            "user_id": "email|696564205b42682f0a5ce5a4"
+          }
+        ]
+      }
+    ],
     "prsCreated": [],
     "securityPosture": {
       "before": {
