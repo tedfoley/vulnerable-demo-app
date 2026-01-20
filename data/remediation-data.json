@@ -1351,9 +1351,9 @@
           ],
           "prUrl": "https://github.com/tedfoley/vulnerable-demo-app/pull/6",
           "progress": 100,
-          "currentTask": "Fix type confusion vulnerabilities (alerts #45, #46, #47)",
+          "currentTask": "Investigate remaining CodeQL alerts and determine if they need fixing",
           "confidenceScore": 1,
-          "confidenceExplanation": "All fixes were implemented with high confidence, and tests passed successfully."
+          "confidenceExplanation": "All identified vulnerabilities have been addressed with appropriate fixes and validations."
         },
         "createdAt": "2026-01-20T00:06:03.698976Z",
         "updatedAt": "2026-01-20T00:09:57.329978Z",
