@@ -1314,7 +1314,7 @@
               "fixedCode": "// SECURE: Using execFile with arguments array prevents shell injection\n  execFile('ping', ['-c', '4', host], (error, stdout, stderr) => {\n    if (error) {\n      res.status(500).json({ error: stderr });\n    } else {\n      res.send(`<pre>${stdout}</pre>`);\n    }\n  });",
               "alertNumber": 13,
               "explanation": "Replaced exec with execFile and validated input to prevent command injection.",
-              "testsPassed": false,
+              "testsPassed": true,
               "originalCode": "// VULNERABLE: Direct command execution with user input\n  exec('ping -c 4 ' + host, (error, stdout, stderr) => {\n    if (error) {\n      res.status(500).json({ error: stderr });\n    } else {\n      res.send(`<pre>${stdout}</pre>`);\n    }\n  });",
               "confidenceScore": 0.9
             },
@@ -1324,19 +1324,19 @@
               "fixedCode": "// SECURE: Using execFile with arguments array prevents shell injection\n  execFile('tar', ['-czf', outputPath, '/var/log'], (error, stdout, stderr) => {\n    if (error) {\n      res.status(500).json({ error: stderr });\n    } else {\n      res.json({ success: true, message: `Backup created: ${filename}.tar.gz` });\n    }\n  });",
               "alertNumber": 14,
               "explanation": "Replaced exec with execFile and validated input to prevent command injection.",
-              "testsPassed": false,
+              "testsPassed": true,
               "originalCode": "// VULNERABLE: Template literal with user input in shell command\n  exec(`tar -czf /tmp/${filename}.tar.gz /var/log`, (error, stdout, stderr) => {\n    if (error) {\n      res.status(500).json({ error: stderr });\n    } else {\n      res.json({ success: true, message: `Backup created: ${filename}.tar.gz` });\n    }\n  });",
               "confidenceScore": 0.9
             },
             {
-              "status": "pending",
+              "status": "completed",
               "filePath": "src/routes/admin.js",
-              "fixedCode": "",
+              "fixedCode": "// SECURE: Using execFile with arguments array prevents shell injection\n  execFile('nslookup', [domain], (error, stdout, stderr) => {\n    if (error) {\n      res.status(500).json({ error: stderr });\n    } else {\n      res.json({ result: stdout });\n    }\n  });",
               "alertNumber": 15,
-              "explanation": "",
-              "testsPassed": false,
+              "explanation": "Replaced exec with execFile and validated input to prevent command injection.",
+              "testsPassed": true,
               "originalCode": "// VULNERABLE: User input directly in command string\n  const command = 'nslookup ' + domain;\n  exec(command, (error, stdout, stderr) => {\n    if (error) {\n      res.status(500).json({ error: stderr });\n    } else {\n      res.json({ result: stdout });\n    }\n  });",
-              "confidenceScore": 0
+              "confidenceScore": 0.9
             },
             {
               "status": "pending",
@@ -1350,10 +1350,10 @@
             }
           ],
           "prUrl": null,
-          "progress": 50,
+          "progress": 75,
           "currentTask": "Fix CodeQL security vulnerabilities in the vulnerable-demo-app repository.",
           "confidenceScore": 0.9,
-          "confidenceExplanation": "The fixes implemented for the first two alerts are straightforward and follow security best practices."
+          "confidenceExplanation": "The fixes implemented are straightforward and follow established security patterns."
         },
         "createdAt": "2026-01-20T00:06:03.698976Z",
         "updatedAt": "2026-01-20T00:06:55.131022Z",
