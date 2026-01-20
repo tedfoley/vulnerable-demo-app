@@ -10,13 +10,33 @@ function getStringParam(param) {
   return null;
 }
 
-// Helper function to validate hostname without ReDoS-vulnerable regex
+// Helper function to check if character is alphanumeric
+function isAlphanumeric(char) {
+  const code = char.charCodeAt(0);
+  return (code >= 48 && code <= 57) ||  // 0-9
+         (code >= 65 && code <= 90) ||  // A-Z
+         (code >= 97 && code <= 122);   // a-z
+}
+
+// Helper function to validate a single hostname label (no regex to avoid ReDoS)
+function isValidLabel(label) {
+  if (label.length === 0 || label.length > 63) return false;
+  // Must start and end with alphanumeric
+  if (!isAlphanumeric(label[0])) return false;
+  if (label.length > 1 && !isAlphanumeric(label[label.length - 1])) return false;
+  // Middle characters can be alphanumeric or hyphen
+  for (let i = 1; i < label.length - 1; i++) {
+    const char = label[i];
+    if (!isAlphanumeric(char) && char !== '-') return false;
+  }
+  return true;
+}
+
+// Helper function to validate hostname (no regex to avoid ReDoS)
 function isValidHostname(hostname) {
   if (typeof hostname !== 'string' || hostname.length === 0 || hostname.length > 253) return false;
   const labels = hostname.split('.');
-  // Simple label regex without nested quantifiers (safe from ReDoS)
-  const labelRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/;
-  return labels.every(label => label.length > 0 && label.length <= 63 && labelRegex.test(label));
+  return labels.every(isValidLabel);
 }
 
 // Simple authentication middleware using environment variable
