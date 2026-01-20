@@ -1417,10 +1417,10 @@
             }
           ],
           "prUrl": null,
-          "progress": 0,
-          "currentTask": "Analyze the vulnerability in src/routes/files.js line 60",
+          "progress": 20,
+          "currentTask": "Analyze vulnerability at src/routes/files.js line 60 (alerts #24, #25, #26)",
           "confidenceScore": 0,
-          "confidenceExplanation": "No fixes have been implemented yet."
+          "confidenceExplanation": "Initial setup completed, but no fixes have been implemented yet."
         },
         "createdAt": "2026-01-20T00:06:04.234565Z",
         "updatedAt": "2026-01-20T00:06:30.328559Z",
