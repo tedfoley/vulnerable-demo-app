@@ -20,8 +20,9 @@ router.get('/ping', (req, res) => {
   const host = req.query.host;
   
   // Validate input: only allow valid IP addresses or hostnames
+  // Using ReDoS-safe regex patterns - hyphen acts as unambiguous delimiter
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
-  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
+  const hostnameRegex = /^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*(\.[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)*$/;
   
   if (!host || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
     return res.status(400).json({ error: 'Invalid host format' });
@@ -65,7 +66,8 @@ router.get('/lookup', (req, res) => {
   const domain = req.query.domain;
   
   // Validate input: only allow valid domain names
-  const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
+  // Using ReDoS-safe regex pattern - hyphen acts as unambiguous delimiter
+  const domainRegex = /^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*(\.[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)*$/;
   
   if (!domain || !domainRegex.test(domain)) {
     return res.status(400).json({ error: 'Invalid domain format' });
@@ -95,8 +97,9 @@ router.get('/safe-ping', (req, res) => {
   const host = req.query.host;
   
   // Validate input: only allow valid IP addresses or hostnames
+  // Using ReDoS-safe regex patterns - hyphen acts as unambiguous delimiter
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
-  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
+  const hostnameRegex = /^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*(\.[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)*$/;
   
   if (!host || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
     return res.status(400).json({ error: 'Invalid host format' });
