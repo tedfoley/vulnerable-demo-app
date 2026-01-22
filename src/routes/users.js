@@ -1,6 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('better-sqlite3');
+const rateLimit = require('express-rate-limit');
+
+const usersRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { error: 'Too many requests, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 const db = new Database(':memory:');
 
@@ -22,7 +31,7 @@ db.exec(`
 
 // TODO: Fix this security issue - SQL Injection vulnerability #1
 // CWE-89: Improper Neutralization of Special Elements used in an SQL Command
-router.get('/search', (req, res) => {
+router.get('/search', usersRateLimiter, (req, res) => {
   const username = req.query.username;
   
   // VULNERABLE: Direct string concatenation in SQL query
@@ -38,7 +47,7 @@ router.get('/search', (req, res) => {
 
 // TODO: Fix this security issue - SQL Injection vulnerability #2
 // CWE-89: Improper Neutralization of Special Elements used in an SQL Command
-router.get('/find', (req, res) => {
+router.get('/find', usersRateLimiter, (req, res) => {
   const email = req.query.email;
   
   // VULNERABLE: Template literal with unsanitized input

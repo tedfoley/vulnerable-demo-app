@@ -1,6 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const { exec } = require('child_process');
+const rateLimit = require('express-rate-limit');
+
+const adminRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { error: 'Too many requests, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // Simple authentication middleware using environment variable
 const authenticate = (req, res, next) => {
@@ -16,7 +25,7 @@ const authenticate = (req, res, next) => {
 
 // TODO: Fix this security issue - Command Injection vulnerability #1
 // CWE-78: Improper Neutralization of Special Elements used in an OS Command
-router.get('/ping', (req, res) => {
+router.get('/ping', adminRateLimiter, (req, res) => {
   const host = req.query.host;
   
   // VULNERABLE: Direct command execution with user input
