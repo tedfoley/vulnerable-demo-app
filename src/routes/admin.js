@@ -2,6 +2,32 @@ const express = require('express');
 const router = express.Router();
 const { execFile } = require('child_process');
 
+// ReDoS-safe validation helper functions
+// Uses simple character class checks and programmatic validation instead of complex regex
+function isValidIPv4(str) {
+  const ipRegex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+  const match = str.match(ipRegex);
+  if (!match) return false;
+  return match.slice(1).every(octet => parseInt(octet, 10) <= 255);
+}
+
+function isValidHostname(str) {
+  if (!str || str.length > 253) return false;
+  // Only allow alphanumeric, hyphens, and dots
+  if (!/^[a-zA-Z0-9.-]+$/.test(str)) return false;
+  // Cannot start or end with hyphen or dot
+  if (/^[-.]|[-.]$/.test(str)) return false;
+  // Cannot have consecutive dots
+  if (/\.\./.test(str)) return false;
+  // Each label must be valid
+  const labels = str.split('.');
+  return labels.every(label => {
+    if (label.length === 0 || label.length > 63) return false;
+    if (/^-|-$/.test(label)) return false;
+    return true;
+  });
+}
+
 // Simple authentication middleware using environment variable
 const authenticate = (req, res, next) => {
   const authHeader = req.headers['x-admin-auth'];
@@ -19,12 +45,8 @@ const authenticate = (req, res, next) => {
 router.get('/ping', (req, res) => {
   const host = req.query.host;
   
-  // Validate input: only allow valid IP addresses or hostnames
-  // Using ReDoS-safe regex patterns - hyphen acts as unambiguous delimiter
-  const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
-  const hostnameRegex = /^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*(\.[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)*$/;
-  
-  if (!host || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
+  // Validate input using ReDoS-safe helper functions
+  if (!host || (!isValidIPv4(host) && !isValidHostname(host))) {
     return res.status(400).json({ error: 'Invalid host format' });
   }
   
@@ -65,11 +87,8 @@ router.post('/backup', authenticate, (req, res) => {
 router.get('/lookup', (req, res) => {
   const domain = req.query.domain;
   
-  // Validate input: only allow valid domain names
-  // Using ReDoS-safe regex pattern - hyphen acts as unambiguous delimiter
-  const domainRegex = /^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*(\.[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)*$/;
-  
-  if (!domain || !domainRegex.test(domain)) {
+  // Validate input using ReDoS-safe helper function
+  if (!domain || !isValidHostname(domain)) {
     return res.status(400).json({ error: 'Invalid domain format' });
   }
   
@@ -96,12 +115,8 @@ router.get('/config', authenticate, (req, res) => {
 router.get('/safe-ping', (req, res) => {
   const host = req.query.host;
   
-  // Validate input: only allow valid IP addresses or hostnames
-  // Using ReDoS-safe regex patterns - hyphen acts as unambiguous delimiter
-  const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
-  const hostnameRegex = /^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*(\.[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)*$/;
-  
-  if (!host || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
+  // Validate input using ReDoS-safe helper functions
+  if (!host || (!isValidIPv4(host) && !isValidHostname(host))) {
     return res.status(400).json({ error: 'Invalid host format' });
   }
   
