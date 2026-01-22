@@ -4,7 +4,16 @@ const { execFile } = require('child_process');
 
 // ReDoS-safe validation helper functions
 // Uses simple character class checks and programmatic validation instead of complex regex
+
+// Ensure input is a string (prevents type confusion from array parameters)
+function ensureString(input) {
+  if (typeof input === 'string') return input;
+  if (Array.isArray(input)) return String(input[0]);
+  return String(input);
+}
+
 function isValidIPv4(str) {
+  if (typeof str !== 'string') return false;
   const ipRegex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
   const match = str.match(ipRegex);
   if (!match) return false;
@@ -12,6 +21,7 @@ function isValidIPv4(str) {
 }
 
 function isValidHostname(str) {
+  if (typeof str !== 'string') return false;
   if (!str || str.length > 253) return false;
   // Only allow alphanumeric, hyphens, and dots
   if (!/^[a-zA-Z0-9.-]+$/.test(str)) return false;
@@ -43,7 +53,8 @@ const authenticate = (req, res, next) => {
 // FIXED: Command Injection vulnerability #1 (CWE-78)
 // Using execFile with arguments array prevents shell injection
 router.get('/ping', (req, res) => {
-  const host = req.query.host;
+  // Normalize input to string (prevents type confusion from array parameters)
+  const host = req.query.host ? ensureString(req.query.host) : null;
   
   // Validate input using ReDoS-safe helper functions
   if (!host || (!isValidIPv4(host) && !isValidHostname(host))) {
@@ -63,7 +74,8 @@ router.get('/ping', (req, res) => {
 // FIXED: Command Injection vulnerability #2 (CWE-78)
 // Using execFile with arguments array prevents shell injection
 router.post('/backup', authenticate, (req, res) => {
-  const filename = req.body.filename;
+  // Normalize input to string (prevents type confusion from array parameters)
+  const filename = req.body.filename ? ensureString(req.body.filename) : null;
   
   // Validate input: only allow alphanumeric characters, hyphens, and underscores
   const filenameRegex = /^[a-zA-Z0-9_-]+$/;
@@ -85,7 +97,8 @@ router.post('/backup', authenticate, (req, res) => {
 // FIXED: Command Injection vulnerability #3 (CWE-78)
 // Using execFile with arguments array prevents shell injection
 router.get('/lookup', (req, res) => {
-  const domain = req.query.domain;
+  // Normalize input to string (prevents type confusion from array parameters)
+  const domain = req.query.domain ? ensureString(req.query.domain) : null;
   
   // Validate input using ReDoS-safe helper function
   if (!domain || !isValidHostname(domain)) {
@@ -113,7 +126,8 @@ router.get('/config', authenticate, (req, res) => {
 // FIXED: Command Injection vulnerability #4 (CWE-78)
 // Using execFile with arguments array prevents shell injection
 router.get('/safe-ping', (req, res) => {
-  const host = req.query.host;
+  // Normalize input to string (prevents type confusion from array parameters)
+  const host = req.query.host ? ensureString(req.query.host) : null;
   
   // Validate input using ReDoS-safe helper functions
   if (!host || (!isValidIPv4(host) && !isValidHostname(host))) {
