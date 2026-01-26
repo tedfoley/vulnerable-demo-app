@@ -19,8 +19,9 @@ const authenticate = (req, res, next) => {
 router.get('/ping', (req, res) => {
   const host = req.query.host;
   
-  if (!host) {
-    return res.status(400).json({ error: 'Host parameter is required' });
+  // Ensure host is a string (prevent type confusion from array parameters)
+  if (!host || typeof host !== 'string') {
+    return res.status(400).json({ error: 'Host parameter is required and must be a string' });
   }
   
   // Validate input format - using simple patterns to avoid ReDoS
@@ -78,8 +79,9 @@ router.post('/backup', authenticate, (req, res) => {
 router.get('/lookup', (req, res) => {
   const domain = req.query.domain;
   
-  if (!domain) {
-    return res.status(400).json({ error: 'Domain parameter is required' });
+  // Ensure domain is a string (prevent type confusion from array parameters)
+  if (!domain || typeof domain !== 'string') {
+    return res.status(400).json({ error: 'Domain parameter is required and must be a string' });
   }
   
   // Validate domain format - using simple pattern to avoid ReDoS
@@ -116,8 +118,9 @@ router.get('/config', authenticate, (req, res) => {
 router.get('/safe-ping', (req, res) => {
   const host = req.query.host;
   
-  if (!host) {
-    return res.status(400).json({ error: 'Host parameter is required' });
+  // Ensure host is a string (prevent type confusion from array parameters)
+  if (!host || typeof host !== 'string') {
+    return res.status(400).json({ error: 'Host parameter is required and must be a string' });
   }
   
   // Validate input before using in command - using simple patterns to avoid ReDoS
