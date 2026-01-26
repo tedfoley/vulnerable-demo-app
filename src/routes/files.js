@@ -54,10 +54,13 @@ router.post('/write', (req, res) => {
 
 // Safe endpoint for comparison (not vulnerable)
 router.get('/safe-read', (req, res) => {
-  const filename = req.query.filename;
+  const rawFilename = req.query.filename;
+  
+  // Ensure filename is a string (prevent type confusion if array is passed)
+  const filename = Array.isArray(rawFilename) ? rawFilename[0] : rawFilename;
   
   // SAFE: Validate filename doesn't contain path traversal
-  if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+  if (!filename || typeof filename !== 'string' || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
     return res.status(400).json({ error: 'Invalid filename' });
   }
   
