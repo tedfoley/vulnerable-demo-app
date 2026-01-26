@@ -17,10 +17,11 @@ const authenticate = (req, res, next) => {
 // FIXED: Command Injection vulnerability #1
 // CWE-78: Using execFile with argument array prevents shell injection
 router.get('/ping', (req, res) => {
-  const host = req.query.host;
+  // Extract host as string, handling array case (prevent type confusion)
+  const rawHost = req.query.host;
+  const host = typeof rawHost === 'string' ? rawHost : (Array.isArray(rawHost) ? String(rawHost[0]) : '');
   
-  // Ensure host is a string (prevent type confusion from array parameters)
-  if (typeof host !== 'string') {
+  if (!host) {
     return res.status(400).json({ error: 'Invalid host parameter' });
   }
   
@@ -68,10 +69,11 @@ router.post('/backup', authenticate, (req, res) => {
 // FIXED: Command Injection vulnerability #3
 // CWE-78: Using execFile with argument array prevents shell injection
 router.get('/lookup', (req, res) => {
-  const domain = req.query.domain;
+  // Extract domain as string, handling array case (prevent type confusion)
+  const rawDomain = req.query.domain;
+  const domain = typeof rawDomain === 'string' ? rawDomain : (Array.isArray(rawDomain) ? String(rawDomain[0]) : '');
   
-  // Ensure domain is a string (prevent type confusion from array parameters)
-  if (typeof domain !== 'string') {
+  if (!domain) {
     return res.status(400).json({ error: 'Invalid domain parameter' });
   }
   
@@ -102,10 +104,11 @@ router.get('/config', authenticate, (req, res) => {
 
 // FIXED: Safe endpoint now uses execFile for complete protection
 router.get('/safe-ping', (req, res) => {
-  const host = req.query.host;
+  // Extract host as string, handling array case (prevent type confusion)
+  const rawHost = req.query.host;
+  const host = typeof rawHost === 'string' ? rawHost : (Array.isArray(rawHost) ? String(rawHost[0]) : '');
   
-  // Ensure host is a string (prevent type confusion from array parameters)
-  if (typeof host !== 'string') {
+  if (!host) {
     return res.status(400).json({ error: 'Invalid host parameter' });
   }
   
