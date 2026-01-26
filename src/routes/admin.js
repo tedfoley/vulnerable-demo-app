@@ -1,6 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const { exec } = require('child_process');
+const rateLimit = require('express-rate-limit');
+
+const adminRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { error: 'Too many requests, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // Simple authentication middleware using environment variable
 const authenticate = (req, res, next) => {
@@ -31,7 +40,7 @@ router.get('/ping', (req, res) => {
 
 // TODO: Fix this security issue - Command Injection vulnerability #2
 // CWE-78: Improper Neutralization of Special Elements used in an OS Command
-router.post('/backup', authenticate, (req, res) => {
+router.post('/backup', adminRateLimiter, authenticate, (req, res) => {
   const filename = req.body.filename;
   
   // VULNERABLE: Template literal with user input in shell command
@@ -46,7 +55,7 @@ router.post('/backup', authenticate, (req, res) => {
 
 // TODO: Fix this security issue - Command Injection vulnerability #3
 // CWE-78: Improper Neutralization of Special Elements used in an OS Command
-router.get('/lookup', (req, res) => {
+router.get('/lookup', adminRateLimiter, (req, res) => {
   const domain = req.query.domain;
   
   // VULNERABLE: User input directly in command string
@@ -70,7 +79,7 @@ router.get('/config', authenticate, (req, res) => {
 });
 
 // Safe endpoint for comparison (not vulnerable)
-router.get('/safe-ping', (req, res) => {
+router.get('/safe-ping', adminRateLimiter, (req, res) => {
   const host = req.query.host;
   
   // SAFE: Validate input before using in command
