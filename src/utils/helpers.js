@@ -3,13 +3,14 @@
 // TODO: Fix this security issue - Cross-Site Scripting (XSS) vulnerability #1
 // CWE-79: Improper Neutralization of Input During Web Page Generation
 function renderUserProfile(username) {
-  // VULNERABLE: Directly embedding user input in HTML without escaping
+  // FIXED: Escape user input to prevent XSS attacks (CWE-79)
+  const escapedUsername = escapeHtml(String(username));
   return `
     <!DOCTYPE html>
     <html>
     <head><title>User Profile</title></head>
     <body>
-      <h1>Welcome, ${username}!</h1>
+      <h1>Welcome, ${escapedUsername}!</h1>
       <p>This is your profile page.</p>
     </body>
     </html>
