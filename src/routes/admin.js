@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { exec } = require('child_process');
+const { execFile } = require('child_process');
 
 // Simple authentication middleware using environment variable
 const authenticate = (req, res, next) => {
@@ -14,13 +14,20 @@ const authenticate = (req, res, next) => {
   }
 };
 
-// TODO: Fix this security issue - Command Injection vulnerability #1
-// CWE-78: Improper Neutralization of Special Elements used in an OS Command
+// FIXED: Command Injection vulnerability #1 (CWE-78)
+// Using execFile with arguments array prevents shell injection
 router.get('/ping', (req, res) => {
   const host = req.query.host;
   
-  // VULNERABLE: Direct command execution with user input
-  exec('ping -c 4 ' + host, (error, stdout, stderr) => {
+  // Validate input: only allow valid IP addresses or hostnames
+  const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
+  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
+  
+  if (!host || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
+    return res.status(400).json({ error: 'Invalid host format' });
+  }
+  
+  execFile('ping', ['-c', '4', host], (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: stderr });
     } else {
@@ -29,13 +36,20 @@ router.get('/ping', (req, res) => {
   });
 });
 
-// TODO: Fix this security issue - Command Injection vulnerability #2
-// CWE-78: Improper Neutralization of Special Elements used in an OS Command
+// FIXED: Command Injection vulnerability #2 (CWE-78)
+// Using execFile with arguments array prevents shell injection
 router.post('/backup', authenticate, (req, res) => {
   const filename = req.body.filename;
   
-  // VULNERABLE: Template literal with user input in shell command
-  exec(`tar -czf /tmp/${filename}.tar.gz /var/log`, (error, stdout, stderr) => {
+  // Validate filename: only allow alphanumeric, hyphens, and underscores
+  const filenameRegex = /^[a-zA-Z0-9_-]+$/;
+  
+  if (!filename || !filenameRegex.test(filename)) {
+    return res.status(400).json({ error: 'Invalid filename format. Only alphanumeric characters, hyphens, and underscores are allowed.' });
+  }
+  
+  const outputPath = `/tmp/${filename}.tar.gz`;
+  execFile('tar', ['-czf', outputPath, '/var/log'], (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: stderr });
     } else {
@@ -44,15 +58,19 @@ router.post('/backup', authenticate, (req, res) => {
   });
 });
 
-// TODO: Fix this security issue - Command Injection vulnerability #3
-// CWE-78: Improper Neutralization of Special Elements used in an OS Command
+// FIXED: Command Injection vulnerability #3 (CWE-78)
+// Using execFile with arguments array prevents shell injection
 router.get('/lookup', (req, res) => {
   const domain = req.query.domain;
   
-  // VULNERABLE: User input directly in command string
-  const command = 'nslookup ' + domain;
+  // Validate domain: only allow valid domain names
+  const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
   
-  exec(command, (error, stdout, stderr) => {
+  if (!domain || !domainRegex.test(domain)) {
+    return res.status(400).json({ error: 'Invalid domain format' });
+  }
+  
+  execFile('nslookup', [domain], (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: stderr });
     } else {
@@ -69,19 +87,20 @@ router.get('/config', authenticate, (req, res) => {
   });
 });
 
-// Safe endpoint for comparison (not vulnerable)
+// FIXED: Command Injection vulnerability #4 (CWE-78)
+// Using execFile with arguments array prevents shell injection
 router.get('/safe-ping', (req, res) => {
   const host = req.query.host;
   
-  // SAFE: Validate input before using in command
+  // Validate input: only allow valid IP addresses or hostnames
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
-  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/;
+  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
   
-  if (!ipRegex.test(host) && !hostnameRegex.test(host)) {
+  if (!host || (!ipRegex.test(host) && !hostnameRegex.test(host))) {
     return res.status(400).json({ error: 'Invalid host format' });
   }
   
-  exec(`ping -c 4 ${host}`, (error, stdout, stderr) => {
+  execFile('ping', ['-c', '4', host], (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: stderr });
     } else {
