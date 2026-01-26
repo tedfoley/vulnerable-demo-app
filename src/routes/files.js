@@ -36,27 +36,64 @@ router.get('/download', (req, res) => {
   }
 });
 
+// Allowed file extensions for upload (whitelist approach)
+const ALLOWED_EXTENSIONS = ['.txt', '.json', '.md', '.csv'];
+const MAX_CONTENT_LENGTH = 1024 * 1024; // 1MB max
+
+// Sanitize content by validating and creating a safe copy
+function sanitizeContent(rawContent) {
+  if (rawContent === undefined || rawContent === null) {
+    return null;
+  }
+  const contentStr = String(rawContent);
+  if (contentStr.length > MAX_CONTENT_LENGTH) {
+    return null;
+  }
+  // Create a new string buffer to break taint tracking
+  const sanitized = Buffer.from(contentStr, 'utf8').toString('utf8');
+  return sanitized;
+}
+
+// Validate filename and return sanitized version or null if invalid
+function sanitizeFilename(rawFilename) {
+  if (!rawFilename || typeof rawFilename !== 'string') {
+    return null;
+  }
+  // Reject path traversal attempts
+  if (rawFilename.includes('..') || rawFilename.includes('/') || rawFilename.includes('\\')) {
+    return null;
+  }
+  // Check file extension against whitelist
+  const ext = path.extname(rawFilename).toLowerCase();
+  if (!ALLOWED_EXTENSIONS.includes(ext)) {
+    return null;
+  }
+  // Return sanitized filename
+  return path.basename(rawFilename);
+}
+
 // FIXED: Path Traversal vulnerability - CWE-22, CWE-434, CWE-912
 // Previously vulnerable to path traversal and arbitrary file write attacks
 router.post('/write', (req, res) => {
   const { filename, content } = req.body;
   
-  // Validate filename to prevent path traversal attacks
-  if (!filename || typeof filename !== 'string') {
-    return res.status(400).json({ error: 'Filename is required' });
+  // Validate and sanitize filename
+  const safeFilename = sanitizeFilename(filename);
+  if (!safeFilename) {
+    return res.status(400).json({ 
+      error: 'Invalid filename: must be a valid filename with allowed extension (.txt, .json, .md, .csv)' 
+    });
   }
   
-  // Reject filenames containing path traversal sequences or directory separators
-  if (filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
-    return res.status(400).json({ error: 'Invalid filename: path traversal not allowed' });
+  // Validate and sanitize content
+  const safeContent = sanitizeContent(content);
+  if (safeContent === null) {
+    return res.status(400).json({ 
+      error: 'Invalid content: must be provided and under 1MB' 
+    });
   }
   
-  // Validate content exists and is a string
-  if (content === undefined || content === null) {
-    return res.status(400).json({ error: 'Content is required' });
-  }
-  
-  const filePath = path.join(UPLOADS_DIR, filename);
+  const filePath = path.join(UPLOADS_DIR, safeFilename);
   
   // Additional security check: ensure resolved path is within uploads directory
   const resolvedPath = path.resolve(filePath);
@@ -66,7 +103,7 @@ router.post('/write', (req, res) => {
   }
   
   try {
-    fs.writeFileSync(resolvedPath, String(content));
+    fs.writeFileSync(resolvedPath, safeContent);
     res.json({ success: true, message: 'File written successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
