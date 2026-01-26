@@ -19,11 +19,16 @@ const authenticate = (req, res, next) => {
 router.get('/ping', (req, res) => {
   const host = req.query.host;
   
+  // Ensure host is a string (prevent type confusion from array parameters)
+  if (typeof host !== 'string') {
+    return res.status(400).json({ error: 'Invalid host parameter' });
+  }
+  
   // Validate input format before execution (using simple regex to avoid ReDoS)
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
   const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]$/;
   
-  if (!host || host.length > 253 || host.includes('..') || 
+  if (host.length > 253 || host.includes('..') || 
       (!ipRegex.test(host) && !hostnameRegex.test(host))) {
     return res.status(400).json({ error: 'Invalid host format' });
   }
@@ -65,10 +70,15 @@ router.post('/backup', authenticate, (req, res) => {
 router.get('/lookup', (req, res) => {
   const domain = req.query.domain;
   
+  // Ensure domain is a string (prevent type confusion from array parameters)
+  if (typeof domain !== 'string') {
+    return res.status(400).json({ error: 'Invalid domain parameter' });
+  }
+  
   // Validate domain format before execution (using simple regex to avoid ReDoS)
   const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]$/;
   
-  if (!domain || domain.length > 253 || domain.includes('..') || !domainRegex.test(domain)) {
+  if (domain.length > 253 || domain.includes('..') || !domainRegex.test(domain)) {
     return res.status(400).json({ error: 'Invalid domain format' });
   }
   
@@ -94,11 +104,16 @@ router.get('/config', authenticate, (req, res) => {
 router.get('/safe-ping', (req, res) => {
   const host = req.query.host;
   
+  // Ensure host is a string (prevent type confusion from array parameters)
+  if (typeof host !== 'string') {
+    return res.status(400).json({ error: 'Invalid host parameter' });
+  }
+  
   // Validate input before using in command (using simple regex to avoid ReDoS)
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
   const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]$/;
   
-  if (!host || host.length > 253 || host.includes('..') ||
+  if (host.length > 253 || host.includes('..') ||
       (!ipRegex.test(host) && !hostnameRegex.test(host))) {
     return res.status(400).json({ error: 'Invalid host format' });
   }
