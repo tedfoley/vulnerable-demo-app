@@ -20,48 +20,48 @@ db.exec(`
   ('jane', 'jane@example.com', 'secret456')
 `);
 
-// TODO: Fix this security issue - SQL Injection vulnerability #1
-// CWE-89: Improper Neutralization of Special Elements used in an SQL Command
+// FIXED: SQL Injection vulnerability #1
+// CWE-89: Using parameterized query to prevent SQL injection
 router.get('/search', (req, res) => {
   const username = req.query.username;
   
-  // VULNERABLE: Direct string concatenation in SQL query
-  const query = "SELECT id, username, email FROM users WHERE username = '" + username + "'";
+  // SAFE: Using parameterized query with placeholder
+  const query = "SELECT id, username, email FROM users WHERE username = ?";
   
   try {
-    const users = db.prepare(query).all();
+    const users = db.prepare(query).all(username);
     res.json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// TODO: Fix this security issue - SQL Injection vulnerability #2
-// CWE-89: Improper Neutralization of Special Elements used in an SQL Command
+// FIXED: SQL Injection vulnerability #2
+// CWE-89: Using parameterized query to prevent SQL injection
 router.get('/find', (req, res) => {
   const email = req.query.email;
   
-  // VULNERABLE: Template literal with unsanitized input
-  const query = `SELECT id, username, email FROM users WHERE email = '${email}'`;
+  // SAFE: Using parameterized query with placeholder
+  const query = "SELECT id, username, email FROM users WHERE email = ?";
   
   try {
-    const users = db.prepare(query).all();
+    const users = db.prepare(query).all(email);
     res.json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// TODO: Fix this security issue - SQL Injection vulnerability #3
-// CWE-89: Improper Neutralization of Special Elements used in an SQL Command
+// FIXED: SQL Injection vulnerability #3
+// CWE-89: Using parameterized query to prevent SQL injection
 router.post('/login', (req, res) => {
   const { username, password } = req.body;
   
-  // VULNERABLE: String concatenation for authentication query
-  const query = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'";
+  // SAFE: Using parameterized query with placeholders
+  const query = "SELECT * FROM users WHERE username = ? AND password = ?";
   
   try {
-    const user = db.prepare(query).get();
+    const user = db.prepare(query).get(username, password);
     if (user) {
       res.json({ success: true, message: 'Login successful', userId: user.id });
     } else {
