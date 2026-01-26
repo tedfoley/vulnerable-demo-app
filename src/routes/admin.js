@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { exec } = require('child_process');
+const { execFile } = require('child_process');
 
 // Simple authentication middleware using environment variable
 const authenticate = (req, res, next) => {
@@ -14,13 +14,25 @@ const authenticate = (req, res, next) => {
   }
 };
 
-// TODO: Fix this security issue - Command Injection vulnerability #1
-// CWE-78: Improper Neutralization of Special Elements used in an OS Command
+// FIXED: Command Injection vulnerability #1
+// CWE-78: Using execFile with arguments array prevents shell injection
 router.get('/ping', (req, res) => {
   const host = req.query.host;
   
-  // VULNERABLE: Direct command execution with user input
-  exec('ping -c 4 ' + host, (error, stdout, stderr) => {
+  if (!host) {
+    return res.status(400).json({ error: 'Host parameter is required' });
+  }
+  
+  // Validate input format
+  const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
+  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
+  
+  if (!ipRegex.test(host) && !hostnameRegex.test(host)) {
+    return res.status(400).json({ error: 'Invalid host format' });
+  }
+  
+  // SECURE: execFile does not spawn a shell, arguments passed as array
+  execFile('ping', ['-c', '4', host], (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: stderr });
     } else {
@@ -29,13 +41,25 @@ router.get('/ping', (req, res) => {
   });
 });
 
-// TODO: Fix this security issue - Command Injection vulnerability #2
-// CWE-78: Improper Neutralization of Special Elements used in an OS Command
+// FIXED: Command Injection vulnerability #2
+// CWE-78: Using execFile with arguments array prevents shell injection
 router.post('/backup', authenticate, (req, res) => {
   const filename = req.body.filename;
   
-  // VULNERABLE: Template literal with user input in shell command
-  exec(`tar -czf /tmp/${filename}.tar.gz /var/log`, (error, stdout, stderr) => {
+  if (!filename) {
+    return res.status(400).json({ error: 'Filename parameter is required' });
+  }
+  
+  // Validate filename - only allow alphanumeric, dash, underscore
+  const filenameRegex = /^[a-zA-Z0-9_-]+$/;
+  if (!filenameRegex.test(filename)) {
+    return res.status(400).json({ error: 'Invalid filename format. Only alphanumeric characters, dashes, and underscores allowed.' });
+  }
+  
+  const outputPath = `/tmp/${filename}.tar.gz`;
+  
+  // SECURE: execFile does not spawn a shell, arguments passed as array
+  execFile('tar', ['-czf', outputPath, '/var/log'], (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: stderr });
     } else {
@@ -44,15 +68,23 @@ router.post('/backup', authenticate, (req, res) => {
   });
 });
 
-// TODO: Fix this security issue - Command Injection vulnerability #3
-// CWE-78: Improper Neutralization of Special Elements used in an OS Command
+// FIXED: Command Injection vulnerability #3
+// CWE-78: Using execFile with arguments array prevents shell injection
 router.get('/lookup', (req, res) => {
   const domain = req.query.domain;
   
-  // VULNERABLE: User input directly in command string
-  const command = 'nslookup ' + domain;
+  if (!domain) {
+    return res.status(400).json({ error: 'Domain parameter is required' });
+  }
   
-  exec(command, (error, stdout, stderr) => {
+  // Validate domain format
+  const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
+  if (!domainRegex.test(domain)) {
+    return res.status(400).json({ error: 'Invalid domain format' });
+  }
+  
+  // SECURE: execFile does not spawn a shell, arguments passed as array
+  execFile('nslookup', [domain], (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: stderr });
     } else {
@@ -69,11 +101,15 @@ router.get('/config', authenticate, (req, res) => {
   });
 });
 
-// Safe endpoint for comparison (not vulnerable)
+// FIXED: Safe endpoint using execFile instead of exec
 router.get('/safe-ping', (req, res) => {
   const host = req.query.host;
   
-  // SAFE: Validate input before using in command
+  if (!host) {
+    return res.status(400).json({ error: 'Host parameter is required' });
+  }
+  
+  // Validate input before using in command
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
   const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/;
   
@@ -81,7 +117,8 @@ router.get('/safe-ping', (req, res) => {
     return res.status(400).json({ error: 'Invalid host format' });
   }
   
-  exec(`ping -c 4 ${host}`, (error, stdout, stderr) => {
+  // SECURE: execFile does not spawn a shell, arguments passed as array
+  execFile('ping', ['-c', '4', host], (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: stderr });
     } else {
