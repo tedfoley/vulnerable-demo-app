@@ -23,9 +23,14 @@ router.get('/ping', (req, res) => {
     return res.status(400).json({ error: 'Host parameter is required' });
   }
   
-  // Validate input format
+  // Validate input format - using simple patterns to avoid ReDoS
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
-  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
+  // Simple hostname validation: alphanumeric, dots, and hyphens only
+  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]$|^[a-zA-Z0-9]$/;
+  
+  if (host.length > 253) {
+    return res.status(400).json({ error: 'Host too long' });
+  }
   
   if (!ipRegex.test(host) && !hostnameRegex.test(host)) {
     return res.status(400).json({ error: 'Invalid host format' });
@@ -77,8 +82,14 @@ router.get('/lookup', (req, res) => {
     return res.status(400).json({ error: 'Domain parameter is required' });
   }
   
-  // Validate domain format
-  const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?(?:\.[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?)*$/;
+  // Validate domain format - using simple pattern to avoid ReDoS
+  // Simple domain validation: alphanumeric, dots, and hyphens only
+  const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]$|^[a-zA-Z0-9]$/;
+  
+  if (domain.length > 253) {
+    return res.status(400).json({ error: 'Domain too long' });
+  }
+  
   if (!domainRegex.test(domain)) {
     return res.status(400).json({ error: 'Invalid domain format' });
   }
@@ -109,9 +120,14 @@ router.get('/safe-ping', (req, res) => {
     return res.status(400).json({ error: 'Host parameter is required' });
   }
   
-  // Validate input before using in command
+  // Validate input before using in command - using simple patterns to avoid ReDoS
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
-  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/;
+  // Simple hostname validation: alphanumeric, dots, and hyphens only
+  const hostnameRegex = /^[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]$|^[a-zA-Z0-9]$/;
+  
+  if (host.length > 253) {
+    return res.status(400).json({ error: 'Host too long' });
+  }
   
   if (!ipRegex.test(host) && !hostnameRegex.test(host)) {
     return res.status(400).json({ error: 'Invalid host format' });
