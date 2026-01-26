@@ -4,7 +4,7 @@ const path = require('path');
 const usersRouter = require('./routes/users');
 const filesRouter = require('./routes/files');
 const adminRouter = require('./routes/admin');
-const { renderUserProfile, generateSessionToken } = require('./utils/helpers');
+const { safeRenderUserProfile, generateSessionToken } = require('./utils/helpers');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 
 app.get('/profile', (req, res) => {
   const username = req.query.username || 'Guest';
-  const html = renderUserProfile(username);
+  const html = safeRenderUserProfile(username);
   res.send(html);
 });
 
