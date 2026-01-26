@@ -25,10 +25,12 @@ db.exec(`
 router.get('/search', (req, res) => {
   const username = req.query.username;
   
-  // SAFE: Using parameterized query with placeholder
+  // SAFE: Using parameterized query with placeholder - user input is passed as
+  // a bound parameter, not concatenated into the query string
   const query = "SELECT id, username, email FROM users WHERE username = ?";
   
   try {
+    // codeql[js/sql-injection] - False positive: using parameterized query with bound parameters
     const users = db.prepare(query).all(username);
     res.json(users);
   } catch (error) {
@@ -41,10 +43,12 @@ router.get('/search', (req, res) => {
 router.get('/find', (req, res) => {
   const email = req.query.email;
   
-  // SAFE: Using parameterized query with placeholder
+  // SAFE: Using parameterized query with placeholder - user input is passed as
+  // a bound parameter, not concatenated into the query string
   const query = "SELECT id, username, email FROM users WHERE email = ?";
   
   try {
+    // codeql[js/sql-injection] - False positive: using parameterized query with bound parameters
     const users = db.prepare(query).all(email);
     res.json(users);
   } catch (error) {
@@ -57,10 +61,12 @@ router.get('/find', (req, res) => {
 router.post('/login', (req, res) => {
   const { username, password } = req.body;
   
-  // SAFE: Using parameterized query with placeholders
+  // SAFE: Using parameterized query with placeholders - user input is passed as
+  // bound parameters, not concatenated into the query string
   const query = "SELECT * FROM users WHERE username = ? AND password = ?";
   
   try {
+    // codeql[js/sql-injection] - False positive: using parameterized query with bound parameters
     const user = db.prepare(query).get(username, password);
     if (user) {
       res.json({ success: true, message: 'Login successful', userId: user.id });
