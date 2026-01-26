@@ -10,8 +10,8 @@ const UPLOADS_DIR = path.join(__dirname, '../../uploads');
 router.get('/read', (req, res) => {
   const filename = req.query.filename;
   
-  // Validate filename doesn't contain path traversal sequences
-  if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+  // Validate filename is a string and doesn't contain path traversal sequences
+  if (!filename || typeof filename !== 'string' || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
     return res.status(400).json({ error: 'Invalid filename' });
   }
   
@@ -36,8 +36,8 @@ router.get('/read', (req, res) => {
 router.get('/download', (req, res) => {
   const filename = req.query.path;
   
-  // Validate filename doesn't contain path traversal sequences
-  if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+  // Validate filename is a string and doesn't contain path traversal sequences
+  if (!filename || typeof filename !== 'string' || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
     return res.status(400).json({ error: 'Invalid filename' });
   }
   
@@ -63,9 +63,14 @@ router.get('/download', (req, res) => {
 router.post('/write', (req, res) => {
   const { filename, content } = req.body;
   
-  // Validate filename doesn't contain path traversal sequences
-  if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+  // Validate filename is a string and doesn't contain path traversal sequences
+  if (!filename || typeof filename !== 'string' || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
     return res.status(400).json({ error: 'Invalid filename' });
+  }
+  
+  // Validate content is a string
+  if (typeof content !== 'string') {
+    return res.status(400).json({ error: 'Invalid content' });
   }
   
   const filePath = path.join(UPLOADS_DIR, filename);
