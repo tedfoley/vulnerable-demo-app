@@ -2,6 +2,13 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
+
+const filesRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { error: 'Too many requests, please try again later.' }
+});
 
 const UPLOADS_DIR = path.join(__dirname, '../../uploads');
 
@@ -38,7 +45,7 @@ router.get('/download', (req, res) => {
 
 // TODO: Fix this security issue - Path Traversal vulnerability #3
 // CWE-22: Improper Limitation of a Pathname to a Restricted Directory
-router.post('/write', (req, res) => {
+router.post('/write', filesRateLimiter, (req, res) => {
   const { filename, content } = req.body;
   
   // VULNERABLE: Writing to user-controlled path
@@ -53,7 +60,7 @@ router.post('/write', (req, res) => {
 });
 
 // Safe endpoint for comparison (not vulnerable)
-router.get('/safe-read', (req, res) => {
+router.get('/safe-read', filesRateLimiter, (req, res) => {
   const filename = req.query.filename;
   
   // SAFE: Validate filename doesn't contain path traversal
