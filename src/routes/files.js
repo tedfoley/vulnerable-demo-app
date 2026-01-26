@@ -2,12 +2,21 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
 
 const UPLOADS_DIR = path.join(__dirname, '../../uploads');
 
+const fileAccessLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { error: 'Too many requests, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 // TODO: Fix this security issue - Path Traversal vulnerability #1
 // CWE-22: Improper Limitation of a Pathname to a Restricted Directory
-router.get('/read', (req, res) => {
+router.get('/read', fileAccessLimiter, (req, res) => {
   const filename = req.query.filename;
   
   // VULNERABLE: Direct path concatenation without sanitization
@@ -23,7 +32,7 @@ router.get('/read', (req, res) => {
 
 // TODO: Fix this security issue - Path Traversal vulnerability #2
 // CWE-22: Improper Limitation of a Pathname to a Restricted Directory
-router.get('/download', (req, res) => {
+router.get('/download', fileAccessLimiter, (req, res) => {
   const filepath = req.query.path;
   
   // VULNERABLE: Using user input directly as file path
